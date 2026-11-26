@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Não Pode!</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #111827;
+            color: white;
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+        }
+
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================
+           TELA INICIAL
+        ========================= */
+
+        #home {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 52px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .logo span {
+            color: #ef4444;
+        }
+
+        .subtitle {
+            color: #9ca3af;
+            margin-bottom: 40px;
+        }
+
+        .main-button {
+            width: 100%;
+            max-width: 350px;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: bold;
+            background: #ef4444;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .main-button:active {
+            transform: scale(.97);
+        }
+
+        /* =========================
+           CONFIGURAÇÃO
+        ========================= */
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .back-button {
+            background: transparent;
+            color: white;
+            font-size: 28px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        /* TEMAS */
+
+        .themes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .theme {
+            padding: 16px 10px;
+            border-radius: 12px;
+            background: #1f2937;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            border: 2px solid transparent;
+        }
+
+        .theme.selected {
+            border-color: #ef4444;
+            background: #2b1b1b;
+        }
+
+        /* TIMES */
+
+        .team-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1f2937;
+            border-radius: 14px;
+            padding: 10px 15px;
+        }
+
+        .team-control button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #374151;
+            color: white;
+            font-size: 25px;
+        }
+
+        .team-number {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .team-names {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .team-name-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            background: #1f2937;
+            color: white;
+            font: inherit;
+        }
+
+        .team-name-input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* TEMPO */
+
+        .times {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .time-option {
+            background: #1f2937;
+            color: white;
+            padding: 15px 5px;
+            border-radius: 12px;
+            font-weight: bold;
+            border: 2px solid transparent;
+        }
+
+        .time-option.selected {
+            border-color: #ef4444;
+        }
+
+        /* =========================
+           JOGO
+        ========================= */
+
+        #game {
+            padding: 15px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .turn-team {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .mute-button {
+            background: #1f2937;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+        }
+
+        /* TIMER */
+
+        .timer-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timer {
+            font-size: 58px;
+            font-weight: 900;
+        }
+
+        .timer.warning {
+            color: #f59e0b;
+        }
+
+        .timer.danger {
+            color: #ef4444;
+        }
+
+        /* CARTA */
+
+        .card {
+            background: white;
+            color: #111827;
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            flex: 1;
+            max-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .category {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .word {
+            font-size: 38px;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        .forbidden-title {
+            color: #ef4444;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .forbidden {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .forbidden span {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* BOTÕES */
+
+        .game-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .correct,
+        .pass {
+            padding: 18px;
+            border-radius: 14px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .correct {
+            background: #16a34a;
+        }
+
+        .pass {
+            background: #374151;
+        }
+
+        /* PLACAR */
+
+        .scoreboard {
+            margin-top: 15px;
+            background: #1f2937;
+            border-radius: 14px;
+            padding: 10px;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px;
+        }
+
+        .score-row.current {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        /* =========================
+           RESULTADO
+        ========================= */
+
+        #result {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .result-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .winner {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .final-score {
+            background: #1f2937;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     HOME
+========================= -->
+
+<div id="home" class="screen active">
+
+    <div class="logo">
+        NÃO <span>PODE!</span>
+    </div>
+
+    <div class="subtitle">
+        O jogo de palavras proibidas
+    </div>
+
+    <button class="main-button" onclick="showConfig()">
+        🎮 NOVA PARTIDA
+    </button>
+
+</div>
+
+
+<!-- =========================
+     CONFIGURAÇÃO
+========================= -->
+
+<div id="config" class="screen">
+
+    <div class="header">
+
+        <button class="back-button" onclick="showScreen('home')">
+            ←
+        </button>
+
+        <h2>Configurar partida</h2>
+
+        <div style="width:30px"></div>
+
+    </div>
+
+
+    <!-- TEMAS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            ESCOLHA O TEMA
+        </div>
+
+        <div class="themes">
+
+            <button class="theme selected" onclick="selectTheme(this,'Todos')">
+                🎲 Todos
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'Música')">
+                🎸 Música
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'Ciência')">
+                🔬 Ciência
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'Natureza')">
+                🌳 Natureza
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'Filmes')">
+                🎬 Filmes
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'Esportes')">
+                ⚽ Esportes
+            </button>
+
+            <button class="theme" onclick="selectTheme(this,'História')">
+                📜 História
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TIMES -->
+
+    <div class="section">
+
+        <div class="section-title">
+            TIMES
+        </div>
+
+        <div class="team-control">
+
+            <button onclick="changeTeams(-1)">
+                −
+            </button>
+
+            <div class="team-number">
+                <span id="teamCount">2</span>
+                times
+            </div>
+
+            <button onclick="changeTeams(1)">
+                +
+            </button>
+
+        </div>
+
+        <div id="teamNames" class="team-names"></div>
+
+    </div>
+
+
+    <!-- TEMPO -->
+
+    <div class="section">
+
+        <div class="section-title">
+            TEMPO POR JOGADA
+        </div>
+
+        <div class="times">
+
+            <button class="time-option selected"
+                    onclick="selectTime(this,30)">
+                30s
+            </button>
+
+            <button class="time-option"
+                    onclick="selectTime(this,60)">
+                60s
+            </button>
+
+            <button class="time-option"
+                    onclick="selectTime(this,90)">
+                90s
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <button class="main-button" onclick="startGame()">
+        COMEÇAR!
+    </button>
+
+</div>
+
+
+<!-- =========================
+     JOGO
+========================= -->
+
+<div id="game" class="screen">
+
+    <div class="game-header">
+
+        <div class="turn-team">
+            Vez do <span id="currentTeamName">
+                Time 1
+            </span>
+        </div>
+
+        <button class="mute-button"
+                onclick="toggleMute()"
+                id="muteButton">
+            🔊
+        </button>
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div class="timer-container">
+
+        <div id="timer" class="timer">
+            30
+        </div>
+
+    </div>
+
+
+    <!-- CARTA -->
+
+    <div class="card">
+
+        <div id="cardCategory" class="category">
+            MÚSICA
+        </div>
+
+        <div id="cardWord" class="word">
+            GUITARRA
+        </div>
+
+        <div class="forbidden-title">
+            🚫 NÃO PODE FALAR
+        </div>
+
+        <div id="forbiddenWords" class="forbidden">
+        </div>
+
+    </div>
+
+
+    <!-- BOTÕES -->
+
+    <div class="game-buttons">
+
+        <button class="correct"
+                onclick="correctAnswer()">
+            ✓ ACERTOU
+        </button>
+
+        <button class="pass"
+                onclick="passCard()">
+            → PASSOU
+        </button>
+
+    </div>
+
+
+    <!-- PLACAR -->
+
+    <div class="scoreboard"
+         id="scoreboard">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     RESULTADO
+========================= -->
+
+<div id="result" class="screen">
+
+    <div class="result-title">
+        🏆 FIM DE JOGO!
+    </div>
+
+    <div class="winner" id="winner">
+    </div>
+
+    <div id="finalScores">
+    </div>
+
+    <button class="main-button"
+            onclick="showConfig()">
+        JOGAR NOVAMENTE
+    </button>
+
+</div>
+
+
+<script>
+
+/* ======================================
+   BANCO DE CARTAS
+====================================== */
+
+const cards = [
+
+    {
+        theme: "Música",
+        word: "GUITARRA",
+        forbidden: ["Música", "Corda", "Violão", "Rock", "Instrumento"]
+    },
+
+    {
+        theme: "Música",
+        word: "BATERIA",
+        forbidden: ["Tambor", "Baqueta", "Música", "Banda", "Percussão"]
+    },
+
+    {
+        theme: "Música",
+        word: "MICROFONE",
+        forbidden: ["Cantar", "Voz", "Palco", "Cantor", "Som"]
+    },
+
+    {
+        theme: "Música",
+        word: "ROCK",
+        forbidden: ["Guitarra", "Banda", "Música", "Heavy", "Metal"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "GRAVIDADE",
+        forbidden: ["Terra", "Peso", "Newton", "Força", "Espaço"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "ÁTOMO",
+        forbidden: ["Molécula", "Próton", "Nêutron", "Elétron", "Matéria"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "DINOSSAURO",
+        forbidden: ["Jurássico", "T-Rex", "Animal", "Fóssil", "Extinto"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "FLORESTA",
+        forbidden: ["Árvore", "Mata", "Natureza", "Verde", "Selva"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "CACHOEIRA",
+        forbidden: ["Água", "Rio", "Queda", "Natureza", "Pedra"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "ELEFANTE",
+        forbidden: ["Animal", "Grande", "Tromba", "África", "Cinza"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "BATMAN",
+        forbidden: ["Herói", "Morcego", "Gotham", "Robin", "DC"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "TITANIC",
+        forbidden: ["Navio", "Jack", "Rose", "Gelo", "Leonardo"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "HARRY POTTER",
+        forbidden: ["Bruxo", "Magia", "Hogwarts", "Varinha", "Voldemort"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "FUTEBOL",
+        forbidden: ["Bola", "Gol", "Equipe", "Campo", "Time"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "BASQUETE",
+        forbidden: ["Bola", "Cesta", "Quadra", "NBA", "Time"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "NATAÇÃO",
+        forbidden: ["Água", "Piscina", "Nadar", "Mar", "Atleta"]
+    },
+
+    {
+        theme: "História",
+        word: "NAPOLEÃO",
+        forbidden: ["França", "Imperador", "Guerra", "Europa", "Bonaparte"]
+    },
+
+    {
+        theme: "História",
+        word: "PIRÂMIDE",
+        forbidden: ["Egito", "Faraó", "Tumba", "Deserto", "Múmia"]
+    },
+
+    {
+        theme: "História",
+        word: "DINHEIRO",
+        forbidden: ["Moeda", "Banco", "Real", "Pagamento", "Notas"]
+    },
+
+    {
+        theme: "Música",
+        word: "SAMBA",
+        forbidden: ["Brasil", "Carnaval", "Ritmo", "Pandeiro", "Dança"]
+    },
+
+    {
+        theme: "Música",
+        word: "PIANO",
+        forbidden: ["Tecla", "Instrumento", "Música", "Cauda", "Tocar"]
+    },
+
+    {
+        theme: "Música",
+        word: "FONE DE OUVIDO",
+        forbidden: ["Escutar", "Som", "Orelha", "Música", "Celular"]
+    },
+
+    {
+        theme: "Música",
+        word: "MPB",
+        forbidden: ["Música", "Brasileira", "Caetano", "Chico", "Gênero"]
+    },
+
+    {
+        theme: "Música",
+        word: "FESTIVAL",
+        forbidden: ["Show", "Palco", "Banda", "Público", "Ingresso"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "VULCÃO",
+        forbidden: ["Lava", "Erupção", "Montanha", "Magma", "Fumaça"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "FOTOSSÍNTESE",
+        forbidden: ["Planta", "Sol", "Luz", "Clorofila", "Oxigênio"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "DNA",
+        forbidden: ["Gene", "Genética", "Hereditariedade", "Célula", "Dupla hélice"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "ECLIPSE",
+        forbidden: ["Lua", "Sol", "Sombra", "Astronomia", "Escuro"]
+    },
+
+    {
+        theme: "Ciência",
+        word: "TELESCÓPIO",
+        forbidden: ["Estrelas", "Lente", "Olhar", "Astronomia", "Planeta"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "ARCO-ÍRIS",
+        forbidden: ["Cores", "Chuva", "Sol", "Céu", "Ponte"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "ABELHA",
+        forbidden: ["Mel", "Colmeia", "Picada", "Inseto", "Flor"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "DESERTO",
+        forbidden: ["Areia", "Seco", "Cacto", "Calor", "Oásis"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "GOLFINHO",
+        forbidden: ["Mar", "Mamífero", "Nadar", "Salto", "Barbatana"]
+    },
+
+    {
+        theme: "Natureza",
+        word: "MONTANHA",
+        forbidden: ["Alto", "Escalar", "Pico", "Trilha", "Rocha"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "JURASSIC PARK",
+        forbidden: ["Dinossauro", "Parque", "Ilha", "Steven Spielberg", "Tiranossauro"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "O REI LEÃO",
+        forbidden: ["Simba", "Mufasa", "África", "Desenho", "Hakuna Matata"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "FROZEN",
+        forbidden: ["Elsa", "Anna", "Gelo", "Olaf", "Disney"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "MATRIX",
+        forbidden: ["Neo", "Pílula", "Realidade", "Keanu Reeves", "Computador"]
+    },
+
+    {
+        theme: "Filmes",
+        word: "TOY STORY",
+        forbidden: ["Brinquedo", "Woody", "Buzz", "Pixar", "Andy"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "VÔLEI",
+        forbidden: ["Rede", "Saque", "Manchete", "Quadra", "Bola"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "TÊNIS",
+        forbidden: ["Raquete", "Bola", "Quadra", "Saque", "Grand Slam"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "MARATONA",
+        forbidden: ["Corrida", "42 quilômetros", "Atletismo", "Chegada", "Resistência"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "SKATE",
+        forbidden: ["Prancha", "Roda", "Manobra", "Rampa", "Capacete"]
+    },
+
+    {
+        theme: "Esportes",
+        word: "OLIMPÍADAS",
+        forbidden: ["Medalha", "Tocha", "Atleta", "Jogos", "Países"]
+    },
+
+    {
+        theme: "História",
+        word: "INDEPENDÊNCIA DO BRASIL",
+        forbidden: ["Dom Pedro", "Sete de setembro", "Portugal", "Grito", "1822"]
+    },
+
+    {
+        theme: "História",
+        word: "REVOLUÇÃO INDUSTRIAL",
+        forbidden: ["Fábrica", "Máquina", "Inglaterra", "Vapor", "Trabalhadores"]
+    },
+
+    {
+        theme: "História",
+        word: "CLEÓPATRA",
+        forbidden: ["Egito", "Rainha", "Faraó", "Nilo", "Júlio César"]
+    },
+
+    {
+        theme: "História",
+        word: "IDADE MÉDIA",
+        forbidden: ["Castelo", "Cavaleiro", "Feudalismo", "Medieval", "Peste"]
+    },
+
+    {
+        theme: "História",
+        word: "SANTOS DUMONT",
+        forbidden: ["Avião", "14-Bis", "Inventor", "Balão", "Aviação"]
+    }
+
+];
+
+/*
+   Grupos adicionais para ampliar o baralho sem depender de uma conexão
+   com IA durante a partida. Cada grupo contém conceitos próximos e cinco
+   palavras proibidas adequadas ao assunto.
+*/
+const expandedCardGroups = [
+    { theme: "Música", words: ["CAVAQUINHO", "BANDOLIM", "BANJO", "UKULELE", "BAIXO ELÉTRICO"], forbidden: ["instrumento", "cordas", "tocar", "músico", "melodia"] },
+    { theme: "Música", words: ["SAXOFONE", "CLARINETE", "OBOÉ", "FAGOTE", "TROMBONE"], forbidden: ["sopro", "orquestra", "bocal", "músico", "som"] },
+    { theme: "Música", words: ["ATABAQUE", "SURDO", "AGOGÔ", "RECO-RECO", "TAMBORIM"], forbidden: ["percussão", "ritmo", "batida", "samba", "tocar"] },
+    { theme: "Música", words: ["ÓRGÃO", "SINTETIZADOR", "ACORDEÃO", "SANFONA", "CRAVO"], forbidden: ["teclas", "instrumento", "música", "tocar", "som"] },
+    { theme: "Música", words: ["MELODIA", "HARMONIA", "COMPASSO", "ACORDE", "AFINAÇÃO"], forbidden: ["música", "notas", "ritmo", "canção", "instrumento"] },
+    { theme: "Música", words: ["MAESTRO", "COMPOSITOR", "LETRISTA", "PRODUTOR MUSICAL", "DJ"], forbidden: ["artista", "música", "banda", "palco", "canção"] },
+    { theme: "Música", words: ["JAZZ", "BLUES", "REGGAE", "FORRÓ", "FREVO"], forbidden: ["gênero", "ritmo", "dança", "banda", "música"] },
+    { theme: "Música", words: ["ÓPERA", "SINFONIA", "CONCERTO", "RECITAL", "SERENATA"], forbidden: ["orquestra", "palco", "cantor", "música", "apresentação"] },
+    { theme: "Música", words: ["VINIL", "TOCA-DISCOS", "CD", "PLAYLIST", "FONE"], forbidden: ["música", "ouvir", "som", "álbum", "canção"] },
+    { theme: "Música", words: ["REFRÃO", "ESTROFE", "VERSO", "RIMA", "CANÇÃO"], forbidden: ["letra", "música", "cantar", "poema", "composição"] },
+    { theme: "Música", words: ["FLAUTA", "TROMPETE", "TUBA", "GAITA", "GONGO"], forbidden: ["instrumento", "tocar", "som", "músico", "banda"] },
+    { theme: "Música", words: ["RODA DE SAMBA", "BLOCO DE CARNAVAL", "TRIO ELÉTRICO", "BAILE", "KARAOKÊ"], forbidden: ["festa", "música", "dança", "cantar", "público"] },
+    { theme: "Música", words: ["FUNK", "RAP", "HIP-HOP", "PAGODE", "AXÉ"], forbidden: ["gênero", "música", "dança", "ritmo", "artista"] },
+    { theme: "Música", words: ["DISCOGRAFIA", "ÁLBUM", "SINGLE", "GRAVADORA", "ESTÚDIO MUSICAL"], forbidden: ["artista", "música", "lançamento", "canção", "gravação"] },
+    { theme: "Música", words: ["MICROFONIA", "AMPLIFICADOR", "CAIXA DE SOM", "MESA DE SOM", "CABO P10"], forbidden: ["áudio", "volume", "palco", "equipamento", "música"] },
+    { theme: "Música", words: ["PARTITURA", "CLAVE DE SOL", "PENTAGRAMA", "SEMÍNIMA", "PAUTA MUSICAL", "NOTA MUSICAL", "DIAPASÃO", "METRÔNOMO"], forbidden: ["notas", "música", "ler", "som", "ritmo"] },
+
+    { theme: "Ciência", words: ["ELÉTRON", "PRÓTON", "NÊUTRON", "ISÓTOPO", "ÍON"], forbidden: ["átomo", "carga", "núcleo", "partícula", "matéria"] },
+    { theme: "Ciência", words: ["CÉLULA", "BACTÉRIA", "VÍRUS", "FUNGOS", "PROTOZOÁRIO"], forbidden: ["microscópio", "organismo", "micróbio", "saúde", "biologia"] },
+    { theme: "Ciência", words: ["MITOCÔNDRIA", "CROMOSSOMO", "PROTEÍNA", "RNA", "MUTAÇÃO"], forbidden: ["célula", "gene", "DNA", "biologia", "organismo"] },
+    { theme: "Ciência", words: ["SATURNO", "JÚPITER", "MARTE", "VÊNUS", "MERCÚRIO"], forbidden: ["planeta", "espaço", "órbita", "sistema solar", "astronomia"] },
+    { theme: "Ciência", words: ["GALÁXIA", "NEBULOSA", "COMETA", "ASTEROIDE", "METEORO"], forbidden: ["espaço", "estrela", "planeta", "céu", "astronomia"] },
+    { theme: "Ciência", words: ["TERMÔMETRO", "BARÔMETRO", "HIGRÔMETRO", "ANEMÔMETRO", "PLUVIÔMETRO"], forbidden: ["medir", "instrumento", "temperatura", "clima", "escala"] },
+    { theme: "Ciência", words: ["OXIGÊNIO", "HIDROGÊNIO", "CARBONO", "FERRO", "HÉLIO"], forbidden: ["elemento", "química", "átomo", "tabela periódica", "matéria"] },
+    { theme: "Ciência", words: ["FUSÃO", "EVAPORAÇÃO", "CONDENSAÇÃO", "SOLIDIFICAÇÃO", "SUBLIMAÇÃO"], forbidden: ["estado", "matéria", "temperatura", "líquido", "mudança"] },
+    { theme: "Ciência", words: ["ELETROSCÓPIO", "MICROSCÓPIO", "LUNETA", "LUPA", "BINÓCULO"], forbidden: ["lente", "observar", "aumentar", "instrumento", "olhar"] },
+    { theme: "Ciência", words: ["VACINA", "ANTICORPO", "IMUNIDADE", "ANTÍGENO", "SORO"], forbidden: ["saúde", "doença", "defesa", "organismo", "injeção"] },
+    { theme: "Ciência", words: ["FÓSSIL", "PALEONTOLOGIA", "ERA GLACIAL", "EXTINÇÃO", "EVOLUÇÃO"], forbidden: ["passado", "dinossauro", "espécie", "história", "Terra"] },
+    { theme: "Ciência", words: ["LASER", "RADAR", "SATÉLITE", "ROBÓTICA", "INTELIGÊNCIA ARTIFICIAL"], forbidden: ["tecnologia", "máquina", "computador", "invenção", "digital"] },
+    { theme: "Ciência", words: ["FÍSICA", "QUÍMICA", "BIOLOGIA", "GEOLOGIA", "ASTRONOMIA"], forbidden: ["ciência", "estudo", "pesquisa", "natureza", "laboratório"] },
+    { theme: "Ciência", words: ["ALAVANCA", "POLIA", "ROLDANA", "PLANO INCLINADO", "ENGRENAGEM"], forbidden: ["força", "máquina", "movimento", "peso", "mecânica"] },
+    { theme: "Ciência", words: ["TERREMOTO", "TSUNAMI", "FURACÃO", "TORNADO", "AVALANCHE"], forbidden: ["desastre", "natureza", "força", "vento", "destruição"] },
+
+    { theme: "Natureza", words: ["IPÊ", "ARAUCÁRIA", "CASTANHEIRA", "JACARANDÁ", "MANGUEIRA"], forbidden: ["árvore", "folha", "tronco", "floresta", "planta"] },
+    { theme: "Natureza", words: ["ORQUÍDEA", "GIRASSOL", "TULIPA", "MARGARIDA", "LAVANDA"], forbidden: ["flor", "pétala", "jardim", "planta", "perfume"] },
+    { theme: "Natureza", words: ["ONÇA-PINTADA", "LOBO-GUARÁ", "TAMANDUÁ", "CAPIVARA", "TATU-BOLA"], forbidden: ["animal", "Brasil", "selva", "mamífero", "natureza"] },
+    { theme: "Natureza", words: ["JACARÉ", "SUCURI", "JIBOIA", "IGUANA", "CAMALEÃO"], forbidden: ["réptil", "escama", "língua", "animal", "sangue frio"] },
+    { theme: "Natureza", words: ["PAPAGAIO", "TUCANO", "ARARA-AZUL", "BEIJA-FLOR", "CORUJA"], forbidden: ["ave", "pena", "voar", "bico", "ninho"] },
+    { theme: "Natureza", words: ["TUBARÃO", "BALEIA", "POLVO", "TARTARUGA-MARINHA", "CAVALO-MARINHO"], forbidden: ["mar", "oceano", "água", "animal", "nadar"] },
+    { theme: "Natureza", words: ["PANTANAL", "AMAZÔNIA", "CERRADO", "CAATINGA", "PAMPA"], forbidden: ["bioma", "Brasil", "natureza", "vegetação", "animais"] },
+    { theme: "Natureza", words: ["GELEIRA", "CAVERNA", "CÂNION", "ILHA", "PENÍNSULA"], forbidden: ["paisagem", "terra", "rocha", "água", "formação"] },
+    { theme: "Natureza", words: ["NASCENTE", "LAGOA", "LAGO", "ESTUÁRIO", "DELTA"], forbidden: ["água", "rio", "margem", "natureza", "correnteza"] },
+    { theme: "Natureza", words: ["MANGUEZAL", "RECIFE DE CORAL", "RESTINGA", "FLORESTA TROPICAL", "SAVANA"], forbidden: ["ecossistema", "bioma", "vegetação", "animais", "ambiente"] },
+    { theme: "Natureza", words: ["NEVE", "GRANIZO", "GEADA", "ORVALHO", "SERENO"], forbidden: ["frio", "água", "clima", "gelo", "manhã"] },
+    { theme: "Natureza", words: ["RAIO", "TROVÃO", "RELÂMPAGO", "TEMPESTADE", "VENTANIA"], forbidden: ["chuva", "nuvem", "clima", "barulho", "céu"] },
+    { theme: "Natureza", words: ["SEMENTE", "RAIZ", "CAULE", "FOLHA", "PÓLEN"], forbidden: ["planta", "crescer", "flor", "terra", "jardim"] },
+    { theme: "Natureza", words: ["BORBOLETA", "JOANINHA", "LIBÉLULA", "FORMIGA", "GAFANHOTO"], forbidden: ["inseto", "asas", "antena", "bicho", "pequeno"] },
+    { theme: "Natureza", words: ["LOBO", "RAPOSA", "URSO", "VEADO", "ESQUILO"], forbidden: ["animal", "floresta", "mamífero", "selvagem", "natureza"] },
+
+    { theme: "Filmes", words: ["PROCURANDO NEMO", "UP: ALTAS AVENTURAS", "WALL-E", "RATATOUILLE", "MONSTROS S.A."], forbidden: ["animação", "Pixar", "personagem", "filme", "cinema"] },
+    { theme: "Filmes", words: ["STAR WARS", "STAR TREK", "DUNA", "ALIEN", "ET"], forbidden: ["ficção científica", "espaço", "planeta", "nave", "extraterrestre"] },
+    { theme: "Filmes", words: ["O PODEROSO CHEFÃO", "CONTATOS IMEDIATOS DE TERCEIRO GRAU", "E.T.", "INDIANA JONES", "A LISTA DE SCHINDLER"], forbidden: ["Steven Spielberg", "diretor", "cinema", "clássico", "Hollywood"] },
+    { theme: "Filmes", words: ["PANTERA NEGRA", "HOMEM-ARANHA", "MULHER-MARAVILHA", "SUPERMAN", "HOMEM DE FERRO"], forbidden: ["herói", "quadrinhos", "poder", "vilão", "uniforme"] },
+    { theme: "Filmes", words: ["O EXORCISTA", "PSICOSE", "O ILUMINADO", "IT: A COISA", "PÂNICO"], forbidden: ["terror", "medo", "assustador", "monstro", "grito"] },
+    { theme: "Filmes", words: ["LA LA LAND", "GREASE", "MAMMA MIA!", "OS MISERÁVEIS", "O REI DO SHOW"], forbidden: ["musical", "canção", "dança", "palco", "ator"] },
+    { theme: "Filmes", words: ["FORREST GUMP", "UM SONHO DE LIBERDADE", "CLUBE DA LUTA", "GLADIADOR", "O RESGATE DO SOLDADO RYAN"], forbidden: ["drama", "ator", "história", "cinema", "personagem"] },
+    { theme: "Filmes", words: ["DE VOLTA PARA O FUTURO", "EXTERMINADOR DO FUTURO", "MAD MAX", "ROBOCOP", "O QUINTO ELEMENTO"], forbidden: ["ação", "futuro", "robô", "perseguição", "ficção"] },
+    { theme: "Filmes", words: ["SHREK", "MADAGASCAR", "KUNG FU PANDA", "COMO TREINAR O SEU DRAGÃO", "MEU MALVADO FAVORITO"], forbidden: ["animação", "personagem", "criança", "aventura", "estúdio"] },
+    { theme: "Filmes", words: ["PIRATAS DO CARIBE", "O SENHOR DOS ANÉIS", "AS CRÔNICAS DE NÁRNIA", "AVATAR", "A MÚMIA"], forbidden: ["aventura", "fantasia", "herói", "jornada", "cinema"] },
+    { theme: "Filmes", words: ["LEGALMENTE LOIRA", "UMA LINDA MULHER", "DE REPENTE 30", "O DIÁRIO DE BRIDGET JONES", "10 COISAS QUE EU ODEIO EM VOCÊ"], forbidden: ["romance", "comédia", "casal", "amor", "encontro"] },
+    { theme: "Filmes", words: ["CENTRAL DO BRASIL", "CIDADE DE DEUS", "O AUTO DA COMPADECIDA", "TROPA DE ELITE", "QUE HORAS ELA VOLTA?"], forbidden: ["Brasil", "filme", "ator", "cinema", "diretor"] },
+    { theme: "Filmes", words: ["JAMES BOND", "MISSÃO IMPOSSÍVEL", "VELOZES E FURIOSOS", "KILL BILL", "JOHN WICK"], forbidden: ["ação", "agente", "luta", "perseguição", "missão"] },
+    { theme: "Filmes", words: ["O DIABO VESTE PRADA", "UMA SEXTA-FEIRA MUITO LOUCA", "AS PATRICINHAS DE BEVERLY HILLS", "MENINAS MALVADAS", "O CASAMENTO DO MEU MELHOR AMIGO"], forbidden: ["comédia", "amigas", "escola", "romance", "personagem"] },
+    { theme: "Filmes", words: ["1917", "DUNKIRK", "APOCALYPSE NOW", "CORAÇÃO VALENTE", "O ÚLTIMO DOS MOICANOS"], forbidden: ["guerra", "soldado", "batalha", "história", "exército"] },
+
+    { theme: "Esportes", words: ["HANDEBOL", "RÚGBI", "BEISEBOL", "CRÍQUETE", "POLO AQUÁTICO"], forbidden: ["bola", "equipe", "partida", "quadra", "competição"] },
+    { theme: "Esportes", words: ["BADMINTON", "SQUASH", "PINGUE-PONGUE", "PICKLEBALL", "FRESCOBOL"], forbidden: ["raquete", "bola", "rede", "jogo", "quadra"] },
+    { theme: "Esportes", words: ["BOXE", "JUDÔ", "KARATÊ", "TAEKWONDO", "JIU-JÍTSU"], forbidden: ["luta", "golpe", "tatame", "oponente", "faixa"] },
+    { theme: "Esportes", words: ["CICLISMO", "MOUNTAIN BIKE", "BMX", "CICLOCROSS", "CICLISMO DE PISTA"], forbidden: ["bicicleta", "pedal", "roda", "corrida", "capacete"] },
+    { theme: "Esportes", words: ["ESQUI", "SNOWBOARD", "PATINAÇÃO NO GELO", "BOBSLED", "CURLING"], forbidden: ["neve", "inverno", "gelo", "frio", "olimpíada"] },
+    { theme: "Esportes", words: ["SURFE", "WINDSURFE", "KITESURFE", "STAND UP PADDLE", "BODYBOARD"], forbidden: ["onda", "mar", "prancha", "praia", "água"] },
+    { theme: "Esportes", words: ["GINÁSTICA ARTÍSTICA", "GINÁSTICA RÍTMICA", "TRAMPOLIM", "BARRAS ASSIMÉTRICAS", "TRAVE DE EQUILÍBRIO"], forbidden: ["acrobacia", "atleta", "aparelho", "medalha", "olimpíada"] },
+    { theme: "Esportes", words: ["SALTO COM VARA", "SALTO EM ALTURA", "SALTO EM DISTÂNCIA", "ARREMESSO DE PESO", "LANÇAMENTO DE DARDO"], forbidden: ["atletismo", "pista", "competição", "marca", "medalha"] },
+    { theme: "Esportes", words: ["GOLFE", "POLO", "HIPISMO", "ARCO E FLECHA", "TIRO ESPORTIVO"], forbidden: ["tacada", "cavalo", "alvo", "competição", "equipamento"] },
+    { theme: "Esportes", words: ["XADREZ", "DAMAS", "GO", "ESGRIMA", "BILHAR"], forbidden: ["estratégia", "jogada", "tabuleiro", "peça", "adversário"] },
+    { theme: "Esportes", words: ["FÓRMULA 1", "RALI", "MOTOCROSS", "KART", "DRAGSTER"], forbidden: ["corrida", "motor", "velocidade", "piloto", "pista"] },
+    { theme: "Esportes", words: ["LEVANTAMENTO DE PESO", "CROSSFIT", "FISICULTURISMO", "POWERLIFTING", "CALISTENIA"], forbidden: ["força", "academia", "músculo", "treino", "peso"] },
+    { theme: "Esportes", words: ["PENTATLO MODERNO", "TRIATLO", "DUATLO", "IRONMAN", "DECATHLON"], forbidden: ["prova", "corrida", "natação", "resistência", "atleta"] },
+    { theme: "Esportes", words: ["FUTEBOL AMERICANO", "FUTEBOL DE AREIA", "FUTSAL", "FUTEBOL DE SALÃO", "FLAG FOOTBALL"], forbidden: ["bola", "gol", "campo", "time", "jogo"] },
+    { theme: "Esportes", words: ["CANOAGEM", "REMO", "RAFTING", "CANOAGEM SLALOM", "DRAGON BOAT"], forbidden: ["rio", "barco", "remo", "água", "equipe"] },
+
+    { theme: "História", words: ["REVOLUÇÃO FRANCESA", "QUEDA DA BASTILHA", "ILUMINISMO", "ERA NAPOLEÔNICA", "DECLARAÇÃO DOS DIREITOS DO HOMEM"], forbidden: ["França", "rei", "revolta", "liberdade", "1789"] },
+    { theme: "História", words: ["RENASCIMENTO", "REFORMA PROTESTANTE", "CONTRARREFORMA", "HUMANISMO", "LEONARDO DA VINCI"], forbidden: ["Europa", "arte", "Igreja", "século", "pintura"] },
+    { theme: "História", words: ["IMPÉRIO ROMANO", "JÚLIO CÉSAR", "AUGUSTO", "COLISEU", "PAX ROMANA"], forbidden: ["Roma", "imperador", "legião", "antiguidade", "Itália"] },
+    { theme: "História", words: ["CIVILIZAÇÃO MAIA", "IMPÉRIO ASTECA", "IMPÉRIO INCA", "MACHU PICCHU", "TENOCHTITLÁN"], forbidden: ["América", "povo", "México", "Peru", "civilização"] },
+    { theme: "História", words: ["BRASIL COLÔNIA", "CAPITANIAS HEREDITÁRIAS", "CICLO DO OURO", "BANDEIRANTES", "GOVERNO-GERAL"], forbidden: ["Portugal", "colônia", "Brasil", "exploração", "século"] },
+    { theme: "História", words: ["ABOLIÇÃO DA ESCRAVATURA", "LEI ÁUREA", "ZUMBI DOS PALMARES", "QUILOMBO", "PRINCESA ISABEL"], forbidden: ["escravidão", "Brasil", "liberdade", "1888", "negros"] },
+    { theme: "História", words: ["PROCLAMAÇÃO DA REPÚBLICA", "MARECHAL DEODORO", "ESTADO NOVO", "GETÚLIO VARGAS", "DIRETAS JÁ"], forbidden: ["Brasil", "governo", "presidente", "política", "história"] },
+    { theme: "História", words: ["PRIMEIRA GUERRA MUNDIAL", "TRATADO DE VERSALHES", "TRÍPLICE ENTENTE", "TRÍPLICE ALIANÇA", "GUERRA DE TRINCHEIRAS"], forbidden: ["1914", "Europa", "conflito", "soldado", "batalha"] },
+    { theme: "História", words: ["SEGUNDA GUERRA MUNDIAL", "DIA D", "HOLOCAUSTO", "PEARL HARBOR", "BOMBA ATÔMICA"], forbidden: ["1939", "Hitler", "guerra", "Alemanha", "conflito"] },
+    { theme: "História", words: ["GUERRA FRIA", "CORTINA DE FERRO", "CRISE DOS MÍSSEIS", "CORRIDA ESPACIAL", "QUEDA DO MURO DE BERLIM"], forbidden: ["Estados Unidos", "União Soviética", "comunismo", "Alemanha", "século XX"] },
+    { theme: "História", words: ["ROTA DA SEDA", "PÓLVORA", "BÚSSOLA", "PAPEL", "IMPRENSA DE GUTENBERG"], forbidden: ["China", "invenção", "comércio", "viagem", "Europa"] },
+    { theme: "História", words: ["MESOPOTÂMIA", "SUMÉRIOS", "BABILÔNIA", "CÓDIGO DE HAMURÁBI", "ESCRITA CUNEIFORME"], forbidden: ["antiguidade", "Tigre", "Eufrates", "civilização", "Oriente"] },
+    { theme: "História", words: ["NEFERTITI", "RAMSÉS II", "TUTANCÂMON", "ESFINGE", "VALE DOS REIS"], forbidden: ["Egito", "faraó", "Nilo", "tumba", "antigo"] },
+    { theme: "História", words: ["FEUDALISMO", "SENHOR FEUDAL", "VASSALO", "SERVO", "SUSERANIA"], forbidden: ["Idade Média", "terra", "castelo", "nobre", "medieval"] },
+    { theme: "História", words: ["EXPANSÃO MARÍTIMA", "CARAVELA", "TRATADO DE TORDESILHAS", "CABRAL", "CAMINHO DAS ÍNDIAS"], forbidden: ["navegação", "Portugal", "oceano", "viagem", "descobrimento"] }
+];
+
+const fallbackForbiddenByTheme = {
+    "Música": ["canção", "melodia", "som", "artista", "palco", "ouvir", "banda", "ritmo"],
+    "Ciência": ["pesquisa", "laboratório", "experimento", "estudo", "teoria", "descoberta", "matéria", "energia"],
+    "Natureza": ["ambiente", "espécie", "vida", "terra", "água", "clima", "paisagem", "ecossistema"],
+    "Filmes": ["cinema", "ator", "diretor", "história", "personagem", "tela", "roteiro", "estreia"],
+    "Esportes": ["atleta", "competição", "partida", "treino", "campeonato", "vitória", "equipe", "recorde"],
+    "História": ["passado", "século", "povo", "evento", "governo", "época", "documento", "civilização"]
+};
+
+const normalizeWords = value => value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("pt-BR")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
+expandedCardGroups.forEach(group => {
+    group.words.forEach(word => {
+        const answer = ` ${normalizeWords(word)} `;
+        const forbidden = [...new Set([
+            ...group.forbidden,
+            ...fallbackForbiddenByTheme[group.theme]
+        ])].filter(term => {
+            const normalizedTerm = normalizeWords(term);
+            return !answer.includes(` ${normalizedTerm} `);
+        }).slice(0, 5);
+
+        cards.push({
+            theme: group.theme,
+            word,
+            forbidden
+        });
+    });
+});
+
+
+/* ======================================
+   VARIÁVEIS
+====================================== */
+
+let selectedTheme = "Todos";
+
+let teamCount = 2;
+
+let selectedTime = 30;
+
+let currentTeam = 0;
+
+let teams = [];
+
+let usedCards = [];
+
+let currentCard = null;
+
+let timerInterval = null;
+
+let timeRemaining = 30;
+
+let muted = false;
+
+renderTeamNameInputs();
+
+
+/* ======================================
+   NAVEGAÇÃO
+====================================== */
+
+function showScreen(id) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+            screen.classList.remove("active");
+        });
+
+    document
+        .getElementById(id)
+        .classList.add("active");
+}
+
+
+function showConfig() {
+
+    showScreen("config");
+
+}
+
+
+/* ======================================
+   TEMAS
+====================================== */
+
+function selectTheme(element, theme) {
+
+    document
+        .querySelectorAll(".theme")
+        .forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+    element.classList.add("selected");
+
+    selectedTheme = theme;
+
+}
+
+
+/* ======================================
+   TIMES
+====================================== */
+
+function changeTeams(value) {
+
+    teamCount += value;
+
+    if (teamCount < 2)
+        teamCount = 2;
+
+    if (teamCount > 8)
+        teamCount = 8;
+
+    document.getElementById("teamCount").innerText =
+        teamCount;
+
+    renderTeamNameInputs();
+
+}
+
+
+function renderTeamNameInputs() {
+
+    const container = document.getElementById("teamNames");
+    const names = Array.from(container.querySelectorAll("input"))
+        .map(input => input.value);
+
+    container.innerHTML = "";
+
+    for (let i = 0; i < teamCount; i++) {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "team-name-input";
+        input.maxLength = 30;
+        input.autocomplete = "off";
+        input.setAttribute("aria-label", `Nome do time ${i + 1} (opcional)`);
+        input.placeholder = `Time ${i + 1} (opcional)`;
+        input.value = names[i] || "";
+        container.appendChild(input);
+    }
+
+}
+
+
+/* ======================================
+   TEMPO
+====================================== */
+
+function selectTime(element, time) {
+
+    document
+        .querySelectorAll(".time-option")
+        .forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+    element.classList.add("selected");
+
+    selectedTime = time;
+
+}
+
+
+/* ======================================
+   INICIAR JOGO
+====================================== */
+
+function startGame() {
+
+    teams = [];
+
+    for (let i = 0; i < teamCount; i++) {
+
+        teams.push({
+            name: document.querySelectorAll("#teamNames input")[i].value.trim() || "Time " + (i + 1),
+            score: 0
+        });
+
+    }
+
+    currentTeam = 0;
+
+    usedCards = [];
+
+    showScreen("game");
+
+    updateScoreboard();
+
+    nextCard();
+
+}
+
+
+/* ======================================
+   SORTEAR CARTA
+====================================== */
+
+function nextCard() {
+
+    clearInterval(timerInterval);
+
+    let availableCards = cards.filter(card => {
+
+        let themeMatch =
+            selectedTheme === "Todos" ||
+            card.theme === selectedTheme;
+
+        let notUsed =
+            !usedCards.includes(card);
+
+        return themeMatch && notUsed;
+
+    });
+
+
+    /*
+       Se todas as cartas daquele tema
+       já foram utilizadas, encerra o jogo.
+    */
+
+    if (availableCards.length === 0) {
+
+        finishGame();
+
+        return;
+
+    }
+
+
+    let index =
+        Math.floor(Math.random() * availableCards.length);
+
+    currentCard = availableCards[index];
+
+    usedCards.push(currentCard);
+
+
+    document.getElementById("cardCategory")
+        .innerText = currentCard.theme;
+
+    document.getElementById("cardWord")
+        .innerText = currentCard.word;
+
+
+    const forbidden =
+        document.getElementById("forbiddenWords");
+
+    forbidden.innerHTML = "";
+
+
+    currentCard.forbidden.forEach(word => {
+
+        let span = document.createElement("span");
+
+        span.innerText = word;
+
+        forbidden.appendChild(span);
+
+    });
+
+
+    document.getElementById("currentTeamName")
+        .innerText =
+        teams[currentTeam].name;
+
+
+    startTimer();
+
+}
+
+
+/* ======================================
+   TIMER
+====================================== */
+
+function startTimer() {
+
+    timeRemaining = selectedTime;
+
+    updateTimer();
+
+    timerInterval = setInterval(() => {
+
+        timeRemaining--;
+
+        updateTimer();
+
+        if (timeRemaining <= 0) {
+
+            clearInterval(timerInterval);
+
+            timeUp();
+
+        }
+
+    }, 1000);
+
+}
+
+
+function updateTimer() {
+
+    const timer =
+        document.getElementById("timer");
+
+    timer.innerText =
+        timeRemaining;
+
+
+    timer.classList.remove(
+        "warning",
+        "danger"
+    );
+
+
+    if (timeRemaining <= 10) {
+
+        timer.classList.add("danger");
+
+    } else if (timeRemaining <= 20) {
+
+        timer.classList.add("warning");
+
+    }
+
+}
+
+
+/* ======================================
+   TEMPO ESGOTADO
+====================================== */
+
+function timeUp() {
+
+    playSound();
+
+    alert("⏰ TEMPO ESGOTADO!");
+
+    nextTeam();
+
+}
+
+
+/* ======================================
+   ACERTOU
+====================================== */
+
+function correctAnswer() {
+
+    clearInterval(timerInterval);
+
+    teams[currentTeam].score++;
+
+    nextTeam();
+
+}
+
+
+/* ======================================
+   PASSOU
+====================================== */
+
+function passCard() {
+
+    clearInterval(timerInterval);
+
+    nextTeam();
+
+}
+
+
+/* ======================================
+   PRÓXIMO TIME
+====================================== */
+
+function nextTeam() {
+
+    currentTeam++;
+
+    if (currentTeam >= teams.length) {
+
+        currentTeam = 0;
+
+    }
+
+    updateScoreboard();
+
+    nextCard();
+
+}
+
+
+/* ======================================
+   PLACAR
+====================================== */
+
+function updateScoreboard() {
+
+    const scoreboard =
+        document.getElementById("scoreboard");
+
+    scoreboard.innerHTML = "";
+
+
+    teams.forEach((team, index) => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "score-row";
+
+
+        if (index === currentTeam) {
+
+            row.classList.add("current");
+
+        }
+
+
+        const name = document.createElement("span");
+        name.textContent = team.name;
+        const score = document.createElement("strong");
+        score.textContent = team.score;
+        row.append(name, score);
+
+
+        scoreboard.appendChild(row);
+
+    });
+
+}
+
+
+/* ======================================
+   MUTE
+====================================== */
+
+function toggleMute() {
+
+    muted = !muted;
+
+    document.getElementById("muteButton")
+        .innerText =
+        muted ? "🔇" : "🔊";
+
+}
+
+
+/* ======================================
+   SOM
+====================================== */
+
+function playSound() {
+
+    if (muted)
+        return;
+
+
+    /*
+       Utiliza a Web Audio API.
+       Não precisa de nenhum arquivo externo.
+    */
+
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContext)
+        return;
+
+
+    const audio =
+        new AudioContext();
+
+
+    const oscillator =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
+
+
+    oscillator.connect(gain);
+
+    gain.connect(audio.destination);
+
+
+    oscillator.frequency.value = 700;
+
+    oscillator.type = "square";
+
+
+    gain.gain.setValueAtTime(
+        0.3,
+        audio.currentTime
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.01,
+        audio.currentTime + 0.5
+    );
+
+
+    oscillator.start();
+
+    oscillator.stop(
+        audio.currentTime + 0.5
+    );
+
+}
+
+
+/* ======================================
+   FINAL DO JOGO
+====================================== */
+
+function finishGame() {
+
+    clearInterval(timerInterval);
+
+    showScreen("result");
+
+
+    teams.sort(
+        (a, b) => b.score - a.score
+    );
+
+
+    const winner =
+        document.getElementById("winner");
+
+
+    winner.innerText =
+        "🏆 " +
+        teams[0].name +
+        " venceu!";
+
+
+    const finalScores =
+        document.getElementById("finalScores");
+
+
+    finalScores.innerHTML = "";
+
+
+    teams.forEach((team, index) => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "final-score";
+
+
+        const name = document.createElement("span");
+        name.textContent = `${index + 1}º - ${team.name}`;
+        const score = document.createElement("strong");
+        score.textContent = `${team.score} ponto(s)`;
+        row.append(name, score);
+
+
+        finalScores.appendChild(row);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
