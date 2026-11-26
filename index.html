@@ -141,29 +141,6 @@
             font-weight: bold;
         }
 
-        /* TEMAS */
-
-        .themes {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .theme {
-            padding: 16px 10px;
-            border-radius: 12px;
-            background: #1f2937;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            border: 2px solid transparent;
-        }
-
-        .theme.selected {
-            border-color: #ef4444;
-            background: #2b1b1b;
-        }
-
         /* TIMES */
 
         .team-control {
@@ -291,14 +268,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        .category {
-            font-size: 13px;
-            color: #6b7280;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
         }
 
         .word {
@@ -448,49 +417,6 @@
     </div>
 
 
-    <!-- TEMAS -->
-
-    <div class="section">
-
-        <div class="section-title">
-            ESCOLHA O TEMA
-        </div>
-
-        <div class="themes">
-
-            <button class="theme selected" onclick="selectTheme(this,'Todos')">
-                🎲 Todos
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'Música')">
-                🎸 Música
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'Ciência')">
-                🔬 Ciência
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'Natureza')">
-                🌳 Natureza
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'Filmes')">
-                🎬 Filmes
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'Esportes')">
-                ⚽ Esportes
-            </button>
-
-            <button class="theme" onclick="selectTheme(this,'História')">
-                📜 História
-            </button>
-
-        </div>
-
-    </div>
-
-
     <!-- TIMES -->
 
     <div class="section">
@@ -596,12 +522,7 @@
     <!-- CARTA -->
 
     <div class="card">
-
-        <div id="cardCategory" class="category">
-            MÚSICA
-        </div>
-
-        <div id="cardWord" class="word">
+<div id="cardWord" class="word">
             GUITARRA
         </div>
 
@@ -674,449 +595,194 @@
 ====================================== */
 
 const cards = [
-
-    {
-        theme: "Música",
-        word: "GUITARRA",
-        forbidden: ["Música", "Corda", "Violão", "Rock", "Instrumento"]
-    },
-
-    {
-        theme: "Música",
-        word: "BATERIA",
-        forbidden: ["Tambor", "Baqueta", "Música", "Banda", "Percussão"]
-    },
-
-    {
-        theme: "Música",
-        word: "MICROFONE",
-        forbidden: ["Cantar", "Voz", "Palco", "Cantor", "Som"]
-    },
-
-    {
-        theme: "Música",
-        word: "ROCK",
-        forbidden: ["Guitarra", "Banda", "Música", "Heavy", "Metal"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "GRAVIDADE",
-        forbidden: ["Terra", "Peso", "Newton", "Força", "Espaço"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "ÁTOMO",
-        forbidden: ["Molécula", "Próton", "Nêutron", "Elétron", "Matéria"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "DINOSSAURO",
-        forbidden: ["Jurássico", "T-Rex", "Animal", "Fóssil", "Extinto"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "FLORESTA",
-        forbidden: ["Árvore", "Mata", "Natureza", "Verde", "Selva"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "CACHOEIRA",
-        forbidden: ["Água", "Rio", "Queda", "Natureza", "Pedra"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "ELEFANTE",
-        forbidden: ["Animal", "Grande", "Tromba", "África", "Cinza"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "BATMAN",
-        forbidden: ["Herói", "Morcego", "Gotham", "Robin", "DC"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "TITANIC",
-        forbidden: ["Navio", "Jack", "Rose", "Gelo", "Leonardo"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "HARRY POTTER",
-        forbidden: ["Bruxo", "Magia", "Hogwarts", "Varinha", "Voldemort"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "FUTEBOL",
-        forbidden: ["Bola", "Gol", "Equipe", "Campo", "Time"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "BASQUETE",
-        forbidden: ["Bola", "Cesta", "Quadra", "NBA", "Time"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "NATAÇÃO",
-        forbidden: ["Água", "Piscina", "Nadar", "Mar", "Atleta"]
-    },
-
-    {
-        theme: "História",
-        word: "NAPOLEÃO",
-        forbidden: ["França", "Imperador", "Guerra", "Europa", "Bonaparte"]
-    },
-
-    {
-        theme: "História",
-        word: "PIRÂMIDE",
-        forbidden: ["Egito", "Faraó", "Tumba", "Deserto", "Múmia"]
-    },
-
-    {
-        theme: "História",
-        word: "DINHEIRO",
-        forbidden: ["Moeda", "Banco", "Real", "Pagamento", "Notas"]
-    },
-
-    {
-        theme: "Música",
-        word: "SAMBA",
-        forbidden: ["Brasil", "Carnaval", "Ritmo", "Pandeiro", "Dança"]
-    },
-
-    {
-        theme: "Música",
-        word: "PIANO",
-        forbidden: ["Tecla", "Instrumento", "Música", "Cauda", "Tocar"]
-    },
-
-    {
-        theme: "Música",
-        word: "FONE DE OUVIDO",
-        forbidden: ["Escutar", "Som", "Orelha", "Música", "Celular"]
-    },
-
-    {
-        theme: "Música",
-        word: "MPB",
-        forbidden: ["Música", "Brasileira", "Caetano", "Chico", "Gênero"]
-    },
-
-    {
-        theme: "Música",
-        word: "FESTIVAL",
-        forbidden: ["Show", "Palco", "Banda", "Público", "Ingresso"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "VULCÃO",
-        forbidden: ["Lava", "Erupção", "Montanha", "Magma", "Fumaça"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "FOTOSSÍNTESE",
-        forbidden: ["Planta", "Sol", "Luz", "Clorofila", "Oxigênio"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "DNA",
-        forbidden: ["Gene", "Genética", "Hereditariedade", "Célula", "Dupla hélice"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "ECLIPSE",
-        forbidden: ["Lua", "Sol", "Sombra", "Astronomia", "Escuro"]
-    },
-
-    {
-        theme: "Ciência",
-        word: "TELESCÓPIO",
-        forbidden: ["Estrelas", "Lente", "Olhar", "Astronomia", "Planeta"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "ARCO-ÍRIS",
-        forbidden: ["Cores", "Chuva", "Sol", "Céu", "Ponte"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "ABELHA",
-        forbidden: ["Mel", "Colmeia", "Picada", "Inseto", "Flor"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "DESERTO",
-        forbidden: ["Areia", "Seco", "Cacto", "Calor", "Oásis"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "GOLFINHO",
-        forbidden: ["Mar", "Mamífero", "Nadar", "Salto", "Barbatana"]
-    },
-
-    {
-        theme: "Natureza",
-        word: "MONTANHA",
-        forbidden: ["Alto", "Escalar", "Pico", "Trilha", "Rocha"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "JURASSIC PARK",
-        forbidden: ["Dinossauro", "Parque", "Ilha", "Steven Spielberg", "Tiranossauro"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "O REI LEÃO",
-        forbidden: ["Simba", "Mufasa", "África", "Desenho", "Hakuna Matata"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "FROZEN",
-        forbidden: ["Elsa", "Anna", "Gelo", "Olaf", "Disney"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "MATRIX",
-        forbidden: ["Neo", "Pílula", "Realidade", "Keanu Reeves", "Computador"]
-    },
-
-    {
-        theme: "Filmes",
-        word: "TOY STORY",
-        forbidden: ["Brinquedo", "Woody", "Buzz", "Pixar", "Andy"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "VÔLEI",
-        forbidden: ["Rede", "Saque", "Manchete", "Quadra", "Bola"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "TÊNIS",
-        forbidden: ["Raquete", "Bola", "Quadra", "Saque", "Grand Slam"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "MARATONA",
-        forbidden: ["Corrida", "42 quilômetros", "Atletismo", "Chegada", "Resistência"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "SKATE",
-        forbidden: ["Prancha", "Roda", "Manobra", "Rampa", "Capacete"]
-    },
-
-    {
-        theme: "Esportes",
-        word: "OLIMPÍADAS",
-        forbidden: ["Medalha", "Tocha", "Atleta", "Jogos", "Países"]
-    },
-
-    {
-        theme: "História",
-        word: "INDEPENDÊNCIA DO BRASIL",
-        forbidden: ["Dom Pedro", "Sete de setembro", "Portugal", "Grito", "1822"]
-    },
-
-    {
-        theme: "História",
-        word: "REVOLUÇÃO INDUSTRIAL",
-        forbidden: ["Fábrica", "Máquina", "Inglaterra", "Vapor", "Trabalhadores"]
-    },
-
-    {
-        theme: "História",
-        word: "CLEÓPATRA",
-        forbidden: ["Egito", "Rainha", "Faraó", "Nilo", "Júlio César"]
-    },
-
-    {
-        theme: "História",
-        word: "IDADE MÉDIA",
-        forbidden: ["Castelo", "Cavaleiro", "Feudalismo", "Medieval", "Peste"]
-    },
-
-    {
-        theme: "História",
-        word: "SANTOS DUMONT",
-        forbidden: ["Avião", "14-Bis", "Inventor", "Balão", "Aviação"]
-    }
-
+    { word: "BASQUETE", forbidden: ["NBA", "CESTA", "QUADRA", "BOLA", "BATER"] },
+    { word: "ATLETA", forbidden: ["ESPORTE", "TREINO", "PESSOA", "COMPETIÇÃO", "PROFISSÃO"] },
+    { word: "FUTEBOL", forbidden: ["BOLA", "GOL", "CAMPO", "CHUTE", "JOGADOR"] },
+    { word: "PIZZA", forbidden: ["QUEIJO", "MASSA", "ITÁLIA", "FATIA", "FORNO"] },
+    { word: "CINEMA", forbidden: ["FILME", "PIPOCA", "TELA", "ATOR", "INGRESSO"] },
+    { word: "PRAIA", forbidden: ["MAR", "AREIA", "SOL", "ONDA", "CALOR"] },
+    { word: "CAFÉ", forbidden: ["BEBIDA", "XÍCARA", "MANHÃ", "QUENTE", "AÇÚCAR"] },
+    { word: "AVIÃO", forbidden: ["VOAR", "PILOTO", "CÉU", "VIAGEM", "AEROPORTO"] },
+    { word: "MÉDICO", forbidden: ["HOSPITAL", "SAÚDE", "REMÉDIO", "CONSULTA", "DOENÇA"] },
+    { word: "PROFESSOR", forbidden: ["ESCOLA", "AULA", "ALUNO", "ENSINAR", "LIVRO"] },
+    { word: "GATO", forbidden: ["ANIMAL", "FELINO", "PET", "MIAU", "LEITE"] },
+    { word: "CACHORRO", forbidden: ["LATIR", "PET", "ANIMAL", "CÃO", "OSSO"] },
+    { word: "TELEFONE", forbidden: ["LIGAR", "CELULAR", "CHAMADA", "FALAR", "NÚMERO"] },
+    { word: "MÚSICA", forbidden: ["CANTAR", "SOM", "INSTRUMENTO", "BANDA", "OUVIR"] },
+    { word: "COMPUTADOR", forbidden: ["INTERNET", "TELA", "TECLADO", "NOTEBOOK", "MOUSE"] },
+    { word: "CARRO", forbidden: ["DIRIGIR", "RODA", "MOTOR", "VEÍCULO", "ESTRADA"] },
+    { word: "CHOCOLATE", forbidden: ["DOCE", "CACAU", "LEITE", "BARRA", "SOBREMESA"] },
+    { word: "LIVRO", forbidden: ["LER", "PÁGINA", "AUTOR", "HISTÓRIA", "BIBLIOTECA"] },
+    { word: "RELÓGIO", forbidden: ["HORA", "TEMPO", "MINUTO", "PULSO", "DESPERTADOR"] },
+    { word: "ASTRONAUTA", forbidden: ["ESPAÇO", "LUA", "FOGUETE", "NASA", "GRAVIDADE"] },
+    { word: "PISCINA", forbidden: ["ÁGUA", "NADAR", "VERÃO", "SOL", "MERGULHO"] },
+    { word: "FESTA", forbidden: ["ANIVERSÁRIO", "BOLO", "MÚSICA", "AMIGOS", "CONVITE"] },
+    { word: "DENTISTA", forbidden: ["DENTE", "BOCA", "ESCOVA", "DOR", "RISO"] },
+    { word: "SORVETE", forbidden: ["GELADO", "CASQUINHA", "DOCE", "VERÃO", "SABOR"] },
+    { word: "BOMBEIRO", forbidden: ["FOGO", "INCÊNDIO", "ÁGUA", "SERVIÇO", "CAMINHÃO"] },
+    { word: "POLÍCIA", forbidden: ["PRENDER", "CRIME", "SIRENE", "VIATURA", "SEGURANÇA"] },
+    { word: "AEROPORTO", forbidden: ["AVIÃO", "MALA", "EMBARQUE", "VOO", "VIAGEM"] },
+    { word: "MUSEU", forbidden: ["ARTE", "QUADRO", "HISTÓRIA", "EXPOSIÇÃO", "ANTIGO"] },
+    { word: "JARDIM", forbidden: ["FLOR", "PLANTA", "TERRA", "VERDE", "GRAMA"] },
+    { word: "SUPERMERCADO", forbidden: ["COMPRAS", "CARRINHO", "COMIDA", "CAIXA", "PREÇO"] },
+    { word: "PADARIA", forbidden: ["PÃO", "CAFÉ", "DOCE", "MANHÃ", "FARINHA"] },
+    { word: "TEATRO", forbidden: ["PALCO", "ATOR", "PEÇA", "PLATEIA", "DRAMA"] },
+    { word: "CIRCO", forbidden: ["PALHAÇO", "LONA", "MAGIA", "PIPOCA", "MALABARISTA"] },
+    { word: "HOTEL", forbidden: ["QUARTO", "CAMA", "VIAGEM", "HÓSPEDE", "RECEPÇÃO"] },
+    { word: "RESTAURANTE", forbidden: ["COMIDA", "GARÇOM", "PRATO", "CARDÁPIO", "ALMOÇO"] },
+    { word: "HOSPITAL", forbidden: ["MÉDICO", "ENFERMEIRO", "REMÉDIO", "DOR", "LEITO"] },
+    { word: "ESCOLA", forbidden: ["ALUNO", "AULA", "PROFESSOR", "CADERNO", "PROVA"] },
+    { word: "ESTÁDIO", forbidden: ["FUTEBOL", "JOGO", "TORCIDA", "CAMPO", "INGRESSO"] },
+    { word: "BIBLIOTECA", forbidden: ["LIVRO", "SILÊNCIO", "ESTUDAR", "LEITURA", "ESTANTE"] },
+    { word: "PARQUE", forbidden: ["ÁRVORE", "BRINCAR", "BANCO", "VERDE", "PASSEIO"] },
+    { word: "ZOO", forbidden: ["ANIMAL", "JAULA", "LEÃO", "VISITA", "BICHO"] },
+    { word: "TREM", forbidden: ["TRILHO", "ESTAÇÃO", "LOCOMOTIVA", "VIAGEM", "VAGÃO"] },
+    { word: "NAVIO", forbidden: ["MAR", "ÁGUA", "BARCO", "CRUZEIRO", "CAPITÃO"] },
+    { word: "BICICLETA", forbidden: ["PEDAL", "RODA", "CICLISMO", "CAPACETE", "ANDAR"] },
+    { word: "MOTOCICLETA", forbidden: ["MOTO", "CAPACETE", "DUAS RODAS", "PILOTAR", "RONCO"] },
+    { word: "ÔNIBUS", forbidden: ["PASSAGEM", "PONTO", "MOTORISTA", "TRANSPORTE", "RUA"] },
+    { word: "TÁXI", forbidden: ["CARRO", "MOTORISTA", "CORRIDA", "AMARELO", "PAGAR"] },
+    { word: "FOGUETE", forbidden: ["ESPAÇO", "NASA", "LUA", "LANÇAMENTO", "ASTRONAUTA"] },
+    { word: "SUBMARINO", forbidden: ["FUNDO", "MAR", "OCEANO", "ÁGUA", "SUBMERSO"] },
+    { word: "HELICÓPTERO", forbidden: ["HÉLICE", "VOAR", "CÉU", "AR", "PILOTO"] },
+    { word: "PANTANAL", forbidden: ["ANIMAL", "MATO", "NATUREZA", "JACARÉ", "RIO"] },
+    { word: "AMAZÔNIA", forbidden: ["FLORESTA", "MATA", "VERDE", "ÁRVORE", "RIO"] },
+    { word: "DESERTO", forbidden: ["AREIA", "CALOR", "CACTO", "SOL", "SECO"] },
+    { word: "VULCÃO", forbidden: ["LAVA", "FOGO", "MONTANHA", "ERUPÇÃO", "PEDRA"] },
+    { word: "CASCATA", forbidden: ["ÁGUA", "QUEDA", "RIO", "NATUREZA", "BANHO"] },
+    { word: "MONTANHA", forbidden: ["ALTO", "ESCALAR", "PICO", "NEVE", "PEDRA"] },
+    { word: "CAVERNA", forbidden: ["ESCURO", "PEDRA", "MORCEGO", "BURACO", "ROCHA"] },
+    { word: "ILHA", forbidden: ["MAR", "ÁGUA", "PRAIA", "ISOLADO", "TERRA"] },
+    { word: "NEVE", forbidden: ["FRIO", "GELO", "INVERNO", "BRANCO", "BONECO"] },
+    { word: "CHUVA", forbidden: ["ÁGUA", "NUVEM", "TEMPESTADE", "GUARDA-CHUVA", "GOTA"] },
+    { word: "SOL", forbidden: ["DIA", "CALOR", "LUZ", "CÉU", "AMARELO"] },
+    { word: "LUA", forbidden: ["NOITE", "ESPAÇO", "CHEIA", "CÉU", "BRANCA"] },
+    { word: "ESTRELA", forbidden: ["CÉU", "NOITE", "BRILHO", "ESPAÇO", "CELESTE"] },
+    { word: "ARCO-ÍRIS", forbidden: ["CORES", "CHUVA", "SOL", "CÉU", "DESENHO"] },
+    { word: "VENTO", forbidden: ["AR", "SOPRAR", "FURACÃO", "BRISA", "FRIO"] },
+    { word: "FOGO", forbidden: ["QUEIMAR", "QUENTE", "FUMAÇA", "CHAMA", "CALOR"] },
+    { word: "GELO", forbidden: ["FRIO", "CONGELAR", "ÁGUA", "CUBO", "SORVETE"] },
+    { word: "TERRA", forbidden: ["CHÃO", "PLANETA", "SUJEIRA", "PLANTAR", "MUNDO"] },
+    { word: "PEDRA", forbidden: ["DURA", "ROCHA", "CHÃO", "CONSTRUÇÃO", "MINERAL"] },
+    { word: "OURO", forbidden: ["AMARELO", "VALIOSO", "ANEL", "RIQUEZA", "METAL"] },
+    { word: "PRATA", forbidden: ["COR", "ALIANÇA", "SEGUNDO", "METAL", "JÓIA"] },
+    { word: "DIAMANTE", forbidden: ["PEDRA", "BRILHO", "VALIOSO", "ANEL", "DURO"] },
+    { word: "AMPOULETA", forbidden: ["TEMPO", "RELÓGIO", "MINUTO", "MEDIR", "AREIA"] },
+    { word: "LÂMPADA", forbidden: ["LUZ", "IDEIA", "TETO", "ILUMINAR", "ENERGIA"] },
+    { word: "ESPELHO", forbidden: ["REFLEXO", "VIDRO", "OLHAR", "IMAGEM", "ROSTO"] },
+    { word: "TESOURA", forbidden: ["CORTAR", "PAPEL", "ESCOLA", "LÂMINA", "COSTURA"] },
+    { word: "MARTELO", forbidden: ["PREGO", "FERRAMENTA", "BATER", "CONSTRUÇÃO", "MAÇO"] },
+    { word: "CHAVE", forbidden: ["PORTA", "FECHADURA", "ABRIR", "SEGREDO", "CADEADO"] },
+    { word: "CADEADO", forbidden: ["CHAVE", "FECHAR", "SEGURANÇA", "PORTÃO", "CORRENTE"] },
+    { word: "CORRENTE", forbidden: ["ELO", "CADEADO", "METAL", "PRENDER", "LIGAÇÃO"] },
+    { word: "VELA", forbidden: ["FOGO", "CERA", "LUZ", "ANIVERSÁRIO", "BOLO"] },
+    { word: "BOLO", forbidden: ["FESTA", "ANIVERSÁRIO", "DOCE", "VELA", "FATIA"] },
+    { word: "PIPOCA", forbidden: ["CINEMA", "MILHO", "PANELA", "SAL", "SAQUINHO"] },
+    { word: "HAMBÚRGUER", forbidden: ["CARNE", "PÃO", "LANCHE", "FAST FOOD", "QUEIJO"] },
+    { word: "BATATA FRITA", forbidden: ["LANCHE", "ÓLEO", "CROCANTE", "KETCHUP", "FAST FOOD"] },
+    { word: "SUCO", forbidden: ["FRUTA", "BEBER", "ÁGUA", "COPO", "AÇÚCAR"] },
+    { word: "REFRIGERANTE", forbidden: ["GÁS", "LATA", "GELADO", "BEBIDA", "AÇÚCAR"] },
+    { word: "CERVEJA", forbidden: ["BEBIDA", "ÁLCOOL", "LATA", "GELADA", "BAR"] },
+    { word: "VINHO", forbidden: ["UVA", "GARRAFA", "TAÇA", "ÁLCOOL", "TINTO"] },
+    { word: "ÁGUA", forbidden: ["SEDE", "BEBER", "TRANSPARENTE", "GARRAFA", "COPO"] },
+    { word: "LEITE", forbidden: ["VACA", "CAIXA", "BRANCO", "CAFÉ", "BEBER"] },
+    { word: "QUEIJO", forbidden: ["LEITE", "AMARELO", "PIZZA", "FATIAR", "MINAS"] },
+    { word: "OVO", forbidden: ["GALINHA", "FRITAR", "COZINHAR", "GEMA", "CLARA"] },
+    { word: "PÃO", forbidden: ["PADARIA", "CAFÉ", "MANHÃ", "MASSA", "FRANCÊS"] },
+    { word: "ARROZ", forbidden: ["FEIJÃO", "BRANCO", "COMIDA", "ALMOÇO", "GRÃO"] },
+    { word: "FEIJOADA", forbidden: ["FEIJÃO", "CARNE", "DOMINGO", "SAMBA", "ARROZ"] },
+    { word: "MAÇÃ", forbidden: ["FRUTA", "VERMELHA", "BRANCA DE NEVE", "VERDE", "ÁRVORE"] },
+    { word: "BANANA", forbidden: ["FRUTA", "MACACO", "AMARELA", "CASCA", "VITAMINA"] },
+    { word: "LARANJA", forbidden: ["FRUTA", "SUCO", "VITAMINA C", "COR", "CASCA"] },
+    { word: "UVA", forbidden: ["FRUTA", "VINHO", "CACHO", "ROXA", "VERDE"] },
+    { word: "MELANCIA", forbidden: ["FRUTA", "VERDE", "VERMELHA", "SEMENTE", "GRANDE"] },
+    { word: "MORANGO", forbidden: ["FRUTA", "VERMELHO", "DOCE", "BOLO", "TORTA"] },
+    { word: "ABACAXI", forbidden: ["FRUTA", "CASCA", "COROA", "AZEDO", "AMARELO"] },
+    { word: "LIMÃO", forbidden: ["AZEDO", "VERDE", "SUCO", "CAIPIRINHA", "FRUTA"] },
+    { word: "TOMATE", forbidden: ["SALADA", "VERMELHO", "MOLHO", "FRUTA", "PIZZA"] },
+    { word: "CENOURA", forbidden: ["COELHO", "LARANJA", "BOLO", "LEGUME", "HORTA"] },
+    { word: "BATATA", forbidden: ["FRITA", "PURÊ", "LEGUME", "RAIZ", "ASSADA"] },
+    { word: "CEBOLA", forbidden: ["CHORAR", "TEMPERO", "CORTAR", "CAMADAS", "ANEL"] },
+    { word: "ALHO", forbidden: ["TEMPERO", "DENTE", "CHEIRO", "REFOGAR", "COMIDA"] },
+    { word: "SAL", forbidden: ["COMIDA", "TEMPERO", "BRANCO", "SALGADO", "MAR"] },
+    { word: "AÇÚCAR", forbidden: ["DOCE", "CAFÉ", "BRANCO", "SOBREMESA", "BOLO"] },
+    { word: "PIMENTA", forbidden: ["ARDIDA", "VERMELHA", "TEMPERO", "FOGO", "MOLHO"] },
+    { word: "SOPA", forbidden: ["QUENTE", "COLHER", "PRATO", "INVERNO", "LEGUMES"] },
+    { word: "SALADA", forbidden: ["FOLHAS", "ALFACE", "VERDE", "SAUDÁVEL", "TOMATE"] },
+    { word: "CARNE", forbidden: ["CHURRASCO", "BOI", "FRITAR", "ASSAR", "ALMOÇO"] },
+    { word: "FRANGO", forbidden: ["AVE", "PENA", "OVO", "ASSADO", "GRELHADO"] },
+    { word: "PEIXE", forbidden: ["MAR", "ÁGUA", "NADAR", "RIO", "ANZOL"] },
+    { word: "CAMARÃO", forbidden: ["MAR", "FRUTO DO MAR", "ROSA", "PEIXE", "PRAIA"] },
+    { word: "SUSHI", forbidden: ["JAPONÊS", "PEIXE", "ARROZ", "CRU", "ALGA"] },
+    { word: "MACARRÃO", forbidden: ["MASSA", "MOLHO", "ITÁLIA", "SPAGHETTI", "PRATO"] },
+    { word: "PANQUECA", forbidden: ["MASSA", "MOLHO", "DOCE", "CAFÉ", "FRIGIDEIRA"] },
+    { word: "PASTEL", forbidden: ["FEIRA", "FRITO", "VENTO", "CALDO DE CANA", "MASSA"] },
+    { word: "COXINHA", forbidden: ["FRANGO", "SALGADO", "MASSA", "FRITA", "FESTA"] },
+    { word: "EMPADA", forbidden: ["SALGADO", "MASSA", "FRANGO", "FORNO", "SECA"] },
+    { word: "PIPOQUEIRA", forbidden: ["PIPOCA", "MILHO", "FOGO", "CINEMA", "PANELA"] },
+    { word: "PANELA", forbidden: ["COZINHAR", "COMIDA", "TAMPA", "CABO", "FRIGIDEIRA"] },
+    { word: "FOGÃO", forbidden: ["FOGO", "COZINHA", "FORNO", "BOCA", "GÁS"] },
+    { word: "GELADEIRA", forbidden: ["FRIO", "GELO", "COZINHA", "PORTA", "ALIMENTO"] },
+    { word: "MICRO-ONDAS", forbidden: ["ESQUENTAR", "COZINHA", "PRATO", "TEMPO", "RÁPIDO"] },
+    { word: "LIQUIDIFICADOR", forbidden: ["BATIDO", "SUCO", "JARRA", "LÂMINA", "COZINHA"] },
+    { word: "PRATO", forbidden: ["COMIDA", "ALMOÇO", "VIDRO", "MESA", "JANTAR"] },
+    { word: "TALHER", forbidden: ["GARFO", "FACA", "COLHER", "COMIDA", "MESA"] },
+    { word: "GARFO", forbidden: ["COMIDA", "TALHER", "ESPETAR", "MASSA", "MESA"] },
+    { word: "FACA", forbidden: ["CORTAR", "TALHER", "AÇO", "LÂMINA", "CARNE"] },
+    { word: "COLHER", forbidden: ["SOPA", "TALHER", "TOMAR", "DOCE", "MESA"] },
+    { word: "COPO", forbidden: ["BEBER", "ÁGUA", "VIDRO", "SUCO", "MESA"] },
+    { word: "TAÇA", forbidden: ["VINHO", "BRINDAR", "VIDRO", "BEBIDA", "FESTA"] },
+    { word: "XÍCARA", forbidden: ["CAFÉ", "CHÁ", "ASA", "QUENTE", "PIRES"] },
+    { word: "GUARDANAPO", forbidden: ["PAPEL", "BOCA", "MESA", "LIMPAR", "SUJEIRA"] },
+    { word: "TOALHA", forbidden: ["BANHO", "ENXUGAR", "CORPO", "PRAIA", "ROSTO"] },
+    { word: "SABONETE", forbidden: ["BANHO", "CHEIRO", "LAVAR", "ESPUMA", "CORPO"] },
+    { word: "SHAMPOO", forbidden: ["CABELO", "BANHO", "LAVAR", "ESPUMA", "CABEÇA"] },
+    { word: "ESCOVA DE DENTES", forbidden: ["PASTA", "ESCOVA", "BOCA", "LAVAR", "DENTE"] },
+    { word: "PASTA DE DENTES", forbidden: ["ESCOVA", "BOCA", "TUBO", "MENTA", "DENTE"] },
+    { word: "PENTE", forbidden: ["CABELO", "PENTEAR", "FIOS", "CABEÇA", "CUIDADO"] },
+    { word: "CAMA", forbidden: ["DORMIR", "QUARTO", "COLCHÃO", "TRAVESSEIRO", "NOITE"] },
+    { word: "COLCHÃO", forbidden: ["CAMA", "DORMIR", "MACIO", "MOLA", "ESPUMA"] },
+    { word: "TRAVESSEIRO", forbidden: ["CABEÇA", "CAMA", "DORMIR", "MACIO", "FRONHA"] },
+    { word: "COBERTOR", forbidden: ["FRIO", "CAMA", "COBRIR", "QUENTINHO", "INVERNO"] },
+    { word: "SOFÁ", forbidden: ["SALA", "SENTAR", "TV", "CONFORTÁVEL", "ALMOFADA"] },
+    { word: "TELEVISÃO", forbidden: ["ASSISTIR", "CANAL", "TELA", "SALA", "CONTROLE"] },
+    { word: "CONTROLE REMOTO", forbidden: ["TV", "MUDAR", "CANAL", "PILHA", "BOTÃO"] },
+    { word: "ARMÁRIO", forbidden: ["ROUPA", "QUARTO", "GUARDAR", "PORTA", "CABIDE"] },
+    { word: "MESA", forbidden: ["CADEIRA", "COMIDA", "SALA", "MADEIRA", "SENTAR"] },
+    { word: "CADEIRA", forbidden: ["SENTAR", "MESA", "ENCOSTO", "SALA", "PERNAS"] },
+    { word: "PORTA", forbidden: ["ABRIR", "FECHAR", "MAÇANETA", "ENTRADA", "CASA"] },
+    { word: "JANELA", forbidden: ["VIDRO", "VER", "ABRIR", "VENTO", "SOL"] },
+    { word: "PAREDE", forbidden: ["TINTA", "TIJOLO", "QUADRO", "CASA", "SALA"] },
+    { word: "TETO", forbidden: ["LÂMPADA", "ALTO", "CASA", "TELHADO", "FORRO"] },
+    { word: "CHÃO", forbidden: ["PISAR", "TAPETE", "PISO", "LIMPAR", "ANDAR"] },
+    { word: "TAPETE", forbidden: ["CHÃO", "PISAR", "SALA", "DECORAÇÃO", "TECIDO"] },
+    { word: "VASSOURA", forbidden: ["VARRER", "CHÃO", "LIMPEZA", "CASA", "BRUXA"] },
+    { word: "RODO", forbidden: ["ÁGUA", "CHÃO", "LIMPEZA", "PANO", "SECAR"] },
+    { word: "BALDE", forbidden: ["ÁGUA", "LIMPEZA", "SABÃO", "PLÁSTICO", "ALÇA"] },
+    { word: "SABÃO", forbidden: ["LAVAR", "LIMPEZA", "ESPUMA", "ROUPA", "LOUÇA"] },
+    { word: "ESPONJA", forbidden: ["LOUÇA", "LAVAR", "AMARELA", "COZINHA", "SABÃO"] },
+    { word: "LIXEIRA", forbidden: ["LIXO", "SUJEIRA", "SACO", "DESCARTE", "RESÍDUO"] },
+    { word: "TECLADO", forbidden: ["DIGITAR", "COMPUTADOR", "TECLAS", "ESCREVER", "LETRA"] },
+    { word: "MOUSE", forbidden: ["COMPUTADOR", "CLICAR", "PONTEIRO", "FIO", "PAD"] },
+    { word: "FONE DE OUVIDO", forbidden: ["MÚSICA", "OUVIR", "SOM", "ORELHA", "BLUETOOTH"] },
+    { word: "CARREGADOR", forbidden: ["BATERIA", "CELULAR", "TOMADA", "CABO", "ENERGIA"] },
+    { word: "TOMADA", forbidden: ["ENERGIA", "PLUGUE", "PAREDE", "CHOQUE", "ELETRICIDADE"] },
+    { word: "PIANO", forbidden: ["MÚSICA", "TECLAS", "TOCAR", "CAUDA", "NOTAS"] },
+    { word: "VIOLÃO", forbidden: ["CORDAS", "MÚSICA", "TOCAR", "ACÚSTICO", "MPB"] },
+    { word: "GUITARRA", forbidden: ["ROCK", "AMPLIFICADOR", "CORDAS", "ELÉTRICA", "MÚSICA"] },
+    { word: "BATERIA", forbidden: ["BAQUETA", "RITMO", "PRATOS", "ROCK", "MÚSICA"] },
+    { word: "FLAUTA", forbidden: ["SOPRAR", "MÚSICA", "DOCE", "INSTRUMENTO", "SOM"] },
+    { word: "FESTA JUNINA", forbidden: ["QUADRILHA", "MILHO", "BANDEIRINHA", "FOGUEIRA", "CHAPÉU"] }
 ];
 
-/*
-   Grupos adicionais para ampliar o baralho sem depender de uma conexão
-   com IA durante a partida. Cada grupo contém conceitos próximos e cinco
-   palavras proibidas adequadas ao assunto.
-*/
-const expandedCardGroups = [
-    { theme: "Música", words: ["CAVAQUINHO", "BANDOLIM", "BANJO", "UKULELE", "BAIXO ELÉTRICO"], forbidden: ["instrumento", "cordas", "tocar", "músico", "melodia"] },
-    { theme: "Música", words: ["SAXOFONE", "CLARINETE", "OBOÉ", "FAGOTE", "TROMBONE"], forbidden: ["sopro", "orquestra", "bocal", "músico", "som"] },
-    { theme: "Música", words: ["ATABAQUE", "SURDO", "AGOGÔ", "RECO-RECO", "TAMBORIM"], forbidden: ["percussão", "ritmo", "batida", "samba", "tocar"] },
-    { theme: "Música", words: ["ÓRGÃO", "SINTETIZADOR", "ACORDEÃO", "SANFONA", "CRAVO"], forbidden: ["teclas", "instrumento", "música", "tocar", "som"] },
-    { theme: "Música", words: ["MELODIA", "HARMONIA", "COMPASSO", "ACORDE", "AFINAÇÃO"], forbidden: ["música", "notas", "ritmo", "canção", "instrumento"] },
-    { theme: "Música", words: ["MAESTRO", "COMPOSITOR", "LETRISTA", "PRODUTOR MUSICAL", "DJ"], forbidden: ["artista", "música", "banda", "palco", "canção"] },
-    { theme: "Música", words: ["JAZZ", "BLUES", "REGGAE", "FORRÓ", "FREVO"], forbidden: ["gênero", "ritmo", "dança", "banda", "música"] },
-    { theme: "Música", words: ["ÓPERA", "SINFONIA", "CONCERTO", "RECITAL", "SERENATA"], forbidden: ["orquestra", "palco", "cantor", "música", "apresentação"] },
-    { theme: "Música", words: ["VINIL", "TOCA-DISCOS", "CD", "PLAYLIST", "FONE"], forbidden: ["música", "ouvir", "som", "álbum", "canção"] },
-    { theme: "Música", words: ["REFRÃO", "ESTROFE", "VERSO", "RIMA", "CANÇÃO"], forbidden: ["letra", "música", "cantar", "poema", "composição"] },
-    { theme: "Música", words: ["FLAUTA", "TROMPETE", "TUBA", "GAITA", "GONGO"], forbidden: ["instrumento", "tocar", "som", "músico", "banda"] },
-    { theme: "Música", words: ["RODA DE SAMBA", "BLOCO DE CARNAVAL", "TRIO ELÉTRICO", "BAILE", "KARAOKÊ"], forbidden: ["festa", "música", "dança", "cantar", "público"] },
-    { theme: "Música", words: ["FUNK", "RAP", "HIP-HOP", "PAGODE", "AXÉ"], forbidden: ["gênero", "música", "dança", "ritmo", "artista"] },
-    { theme: "Música", words: ["DISCOGRAFIA", "ÁLBUM", "SINGLE", "GRAVADORA", "ESTÚDIO MUSICAL"], forbidden: ["artista", "música", "lançamento", "canção", "gravação"] },
-    { theme: "Música", words: ["MICROFONIA", "AMPLIFICADOR", "CAIXA DE SOM", "MESA DE SOM", "CABO P10"], forbidden: ["áudio", "volume", "palco", "equipamento", "música"] },
-    { theme: "Música", words: ["PARTITURA", "CLAVE DE SOL", "PENTAGRAMA", "SEMÍNIMA", "PAUTA MUSICAL", "NOTA MUSICAL", "DIAPASÃO", "METRÔNOMO"], forbidden: ["notas", "música", "ler", "som", "ritmo"] },
 
-    { theme: "Ciência", words: ["ELÉTRON", "PRÓTON", "NÊUTRON", "ISÓTOPO", "ÍON"], forbidden: ["átomo", "carga", "núcleo", "partícula", "matéria"] },
-    { theme: "Ciência", words: ["CÉLULA", "BACTÉRIA", "VÍRUS", "FUNGOS", "PROTOZOÁRIO"], forbidden: ["microscópio", "organismo", "micróbio", "saúde", "biologia"] },
-    { theme: "Ciência", words: ["MITOCÔNDRIA", "CROMOSSOMO", "PROTEÍNA", "RNA", "MUTAÇÃO"], forbidden: ["célula", "gene", "DNA", "biologia", "organismo"] },
-    { theme: "Ciência", words: ["SATURNO", "JÚPITER", "MARTE", "VÊNUS", "MERCÚRIO"], forbidden: ["planeta", "espaço", "órbita", "sistema solar", "astronomia"] },
-    { theme: "Ciência", words: ["GALÁXIA", "NEBULOSA", "COMETA", "ASTEROIDE", "METEORO"], forbidden: ["espaço", "estrela", "planeta", "céu", "astronomia"] },
-    { theme: "Ciência", words: ["TERMÔMETRO", "BARÔMETRO", "HIGRÔMETRO", "ANEMÔMETRO", "PLUVIÔMETRO"], forbidden: ["medir", "instrumento", "temperatura", "clima", "escala"] },
-    { theme: "Ciência", words: ["OXIGÊNIO", "HIDROGÊNIO", "CARBONO", "FERRO", "HÉLIO"], forbidden: ["elemento", "química", "átomo", "tabela periódica", "matéria"] },
-    { theme: "Ciência", words: ["FUSÃO", "EVAPORAÇÃO", "CONDENSAÇÃO", "SOLIDIFICAÇÃO", "SUBLIMAÇÃO"], forbidden: ["estado", "matéria", "temperatura", "líquido", "mudança"] },
-    { theme: "Ciência", words: ["ELETROSCÓPIO", "MICROSCÓPIO", "LUNETA", "LUPA", "BINÓCULO"], forbidden: ["lente", "observar", "aumentar", "instrumento", "olhar"] },
-    { theme: "Ciência", words: ["VACINA", "ANTICORPO", "IMUNIDADE", "ANTÍGENO", "SORO"], forbidden: ["saúde", "doença", "defesa", "organismo", "injeção"] },
-    { theme: "Ciência", words: ["FÓSSIL", "PALEONTOLOGIA", "ERA GLACIAL", "EXTINÇÃO", "EVOLUÇÃO"], forbidden: ["passado", "dinossauro", "espécie", "história", "Terra"] },
-    { theme: "Ciência", words: ["LASER", "RADAR", "SATÉLITE", "ROBÓTICA", "INTELIGÊNCIA ARTIFICIAL"], forbidden: ["tecnologia", "máquina", "computador", "invenção", "digital"] },
-    { theme: "Ciência", words: ["FÍSICA", "QUÍMICA", "BIOLOGIA", "GEOLOGIA", "ASTRONOMIA"], forbidden: ["ciência", "estudo", "pesquisa", "natureza", "laboratório"] },
-    { theme: "Ciência", words: ["ALAVANCA", "POLIA", "ROLDANA", "PLANO INCLINADO", "ENGRENAGEM"], forbidden: ["força", "máquina", "movimento", "peso", "mecânica"] },
-    { theme: "Ciência", words: ["TERREMOTO", "TSUNAMI", "FURACÃO", "TORNADO", "AVALANCHE"], forbidden: ["desastre", "natureza", "força", "vento", "destruição"] },
-
-    { theme: "Natureza", words: ["IPÊ", "ARAUCÁRIA", "CASTANHEIRA", "JACARANDÁ", "MANGUEIRA"], forbidden: ["árvore", "folha", "tronco", "floresta", "planta"] },
-    { theme: "Natureza", words: ["ORQUÍDEA", "GIRASSOL", "TULIPA", "MARGARIDA", "LAVANDA"], forbidden: ["flor", "pétala", "jardim", "planta", "perfume"] },
-    { theme: "Natureza", words: ["ONÇA-PINTADA", "LOBO-GUARÁ", "TAMANDUÁ", "CAPIVARA", "TATU-BOLA"], forbidden: ["animal", "Brasil", "selva", "mamífero", "natureza"] },
-    { theme: "Natureza", words: ["JACARÉ", "SUCURI", "JIBOIA", "IGUANA", "CAMALEÃO"], forbidden: ["réptil", "escama", "língua", "animal", "sangue frio"] },
-    { theme: "Natureza", words: ["PAPAGAIO", "TUCANO", "ARARA-AZUL", "BEIJA-FLOR", "CORUJA"], forbidden: ["ave", "pena", "voar", "bico", "ninho"] },
-    { theme: "Natureza", words: ["TUBARÃO", "BALEIA", "POLVO", "TARTARUGA-MARINHA", "CAVALO-MARINHO"], forbidden: ["mar", "oceano", "água", "animal", "nadar"] },
-    { theme: "Natureza", words: ["PANTANAL", "AMAZÔNIA", "CERRADO", "CAATINGA", "PAMPA"], forbidden: ["bioma", "Brasil", "natureza", "vegetação", "animais"] },
-    { theme: "Natureza", words: ["GELEIRA", "CAVERNA", "CÂNION", "ILHA", "PENÍNSULA"], forbidden: ["paisagem", "terra", "rocha", "água", "formação"] },
-    { theme: "Natureza", words: ["NASCENTE", "LAGOA", "LAGO", "ESTUÁRIO", "DELTA"], forbidden: ["água", "rio", "margem", "natureza", "correnteza"] },
-    { theme: "Natureza", words: ["MANGUEZAL", "RECIFE DE CORAL", "RESTINGA", "FLORESTA TROPICAL", "SAVANA"], forbidden: ["ecossistema", "bioma", "vegetação", "animais", "ambiente"] },
-    { theme: "Natureza", words: ["NEVE", "GRANIZO", "GEADA", "ORVALHO", "SERENO"], forbidden: ["frio", "água", "clima", "gelo", "manhã"] },
-    { theme: "Natureza", words: ["RAIO", "TROVÃO", "RELÂMPAGO", "TEMPESTADE", "VENTANIA"], forbidden: ["chuva", "nuvem", "clima", "barulho", "céu"] },
-    { theme: "Natureza", words: ["SEMENTE", "RAIZ", "CAULE", "FOLHA", "PÓLEN"], forbidden: ["planta", "crescer", "flor", "terra", "jardim"] },
-    { theme: "Natureza", words: ["BORBOLETA", "JOANINHA", "LIBÉLULA", "FORMIGA", "GAFANHOTO"], forbidden: ["inseto", "asas", "antena", "bicho", "pequeno"] },
-    { theme: "Natureza", words: ["LOBO", "RAPOSA", "URSO", "VEADO", "ESQUILO"], forbidden: ["animal", "floresta", "mamífero", "selvagem", "natureza"] },
-
-    { theme: "Filmes", words: ["PROCURANDO NEMO", "UP: ALTAS AVENTURAS", "WALL-E", "RATATOUILLE", "MONSTROS S.A."], forbidden: ["animação", "Pixar", "personagem", "filme", "cinema"] },
-    { theme: "Filmes", words: ["STAR WARS", "STAR TREK", "DUNA", "ALIEN", "ET"], forbidden: ["ficção científica", "espaço", "planeta", "nave", "extraterrestre"] },
-    { theme: "Filmes", words: ["O PODEROSO CHEFÃO", "CONTATOS IMEDIATOS DE TERCEIRO GRAU", "E.T.", "INDIANA JONES", "A LISTA DE SCHINDLER"], forbidden: ["Steven Spielberg", "diretor", "cinema", "clássico", "Hollywood"] },
-    { theme: "Filmes", words: ["PANTERA NEGRA", "HOMEM-ARANHA", "MULHER-MARAVILHA", "SUPERMAN", "HOMEM DE FERRO"], forbidden: ["herói", "quadrinhos", "poder", "vilão", "uniforme"] },
-    { theme: "Filmes", words: ["O EXORCISTA", "PSICOSE", "O ILUMINADO", "IT: A COISA", "PÂNICO"], forbidden: ["terror", "medo", "assustador", "monstro", "grito"] },
-    { theme: "Filmes", words: ["LA LA LAND", "GREASE", "MAMMA MIA!", "OS MISERÁVEIS", "O REI DO SHOW"], forbidden: ["musical", "canção", "dança", "palco", "ator"] },
-    { theme: "Filmes", words: ["FORREST GUMP", "UM SONHO DE LIBERDADE", "CLUBE DA LUTA", "GLADIADOR", "O RESGATE DO SOLDADO RYAN"], forbidden: ["drama", "ator", "história", "cinema", "personagem"] },
-    { theme: "Filmes", words: ["DE VOLTA PARA O FUTURO", "EXTERMINADOR DO FUTURO", "MAD MAX", "ROBOCOP", "O QUINTO ELEMENTO"], forbidden: ["ação", "futuro", "robô", "perseguição", "ficção"] },
-    { theme: "Filmes", words: ["SHREK", "MADAGASCAR", "KUNG FU PANDA", "COMO TREINAR O SEU DRAGÃO", "MEU MALVADO FAVORITO"], forbidden: ["animação", "personagem", "criança", "aventura", "estúdio"] },
-    { theme: "Filmes", words: ["PIRATAS DO CARIBE", "O SENHOR DOS ANÉIS", "AS CRÔNICAS DE NÁRNIA", "AVATAR", "A MÚMIA"], forbidden: ["aventura", "fantasia", "herói", "jornada", "cinema"] },
-    { theme: "Filmes", words: ["LEGALMENTE LOIRA", "UMA LINDA MULHER", "DE REPENTE 30", "O DIÁRIO DE BRIDGET JONES", "10 COISAS QUE EU ODEIO EM VOCÊ"], forbidden: ["romance", "comédia", "casal", "amor", "encontro"] },
-    { theme: "Filmes", words: ["CENTRAL DO BRASIL", "CIDADE DE DEUS", "O AUTO DA COMPADECIDA", "TROPA DE ELITE", "QUE HORAS ELA VOLTA?"], forbidden: ["Brasil", "filme", "ator", "cinema", "diretor"] },
-    { theme: "Filmes", words: ["JAMES BOND", "MISSÃO IMPOSSÍVEL", "VELOZES E FURIOSOS", "KILL BILL", "JOHN WICK"], forbidden: ["ação", "agente", "luta", "perseguição", "missão"] },
-    { theme: "Filmes", words: ["O DIABO VESTE PRADA", "UMA SEXTA-FEIRA MUITO LOUCA", "AS PATRICINHAS DE BEVERLY HILLS", "MENINAS MALVADAS", "O CASAMENTO DO MEU MELHOR AMIGO"], forbidden: ["comédia", "amigas", "escola", "romance", "personagem"] },
-    { theme: "Filmes", words: ["1917", "DUNKIRK", "APOCALYPSE NOW", "CORAÇÃO VALENTE", "O ÚLTIMO DOS MOICANOS"], forbidden: ["guerra", "soldado", "batalha", "história", "exército"] },
-
-    { theme: "Esportes", words: ["HANDEBOL", "RÚGBI", "BEISEBOL", "CRÍQUETE", "POLO AQUÁTICO"], forbidden: ["bola", "equipe", "partida", "quadra", "competição"] },
-    { theme: "Esportes", words: ["BADMINTON", "SQUASH", "PINGUE-PONGUE", "PICKLEBALL", "FRESCOBOL"], forbidden: ["raquete", "bola", "rede", "jogo", "quadra"] },
-    { theme: "Esportes", words: ["BOXE", "JUDÔ", "KARATÊ", "TAEKWONDO", "JIU-JÍTSU"], forbidden: ["luta", "golpe", "tatame", "oponente", "faixa"] },
-    { theme: "Esportes", words: ["CICLISMO", "MOUNTAIN BIKE", "BMX", "CICLOCROSS", "CICLISMO DE PISTA"], forbidden: ["bicicleta", "pedal", "roda", "corrida", "capacete"] },
-    { theme: "Esportes", words: ["ESQUI", "SNOWBOARD", "PATINAÇÃO NO GELO", "BOBSLED", "CURLING"], forbidden: ["neve", "inverno", "gelo", "frio", "olimpíada"] },
-    { theme: "Esportes", words: ["SURFE", "WINDSURFE", "KITESURFE", "STAND UP PADDLE", "BODYBOARD"], forbidden: ["onda", "mar", "prancha", "praia", "água"] },
-    { theme: "Esportes", words: ["GINÁSTICA ARTÍSTICA", "GINÁSTICA RÍTMICA", "TRAMPOLIM", "BARRAS ASSIMÉTRICAS", "TRAVE DE EQUILÍBRIO"], forbidden: ["acrobacia", "atleta", "aparelho", "medalha", "olimpíada"] },
-    { theme: "Esportes", words: ["SALTO COM VARA", "SALTO EM ALTURA", "SALTO EM DISTÂNCIA", "ARREMESSO DE PESO", "LANÇAMENTO DE DARDO"], forbidden: ["atletismo", "pista", "competição", "marca", "medalha"] },
-    { theme: "Esportes", words: ["GOLFE", "POLO", "HIPISMO", "ARCO E FLECHA", "TIRO ESPORTIVO"], forbidden: ["tacada", "cavalo", "alvo", "competição", "equipamento"] },
-    { theme: "Esportes", words: ["XADREZ", "DAMAS", "GO", "ESGRIMA", "BILHAR"], forbidden: ["estratégia", "jogada", "tabuleiro", "peça", "adversário"] },
-    { theme: "Esportes", words: ["FÓRMULA 1", "RALI", "MOTOCROSS", "KART", "DRAGSTER"], forbidden: ["corrida", "motor", "velocidade", "piloto", "pista"] },
-    { theme: "Esportes", words: ["LEVANTAMENTO DE PESO", "CROSSFIT", "FISICULTURISMO", "POWERLIFTING", "CALISTENIA"], forbidden: ["força", "academia", "músculo", "treino", "peso"] },
-    { theme: "Esportes", words: ["PENTATLO MODERNO", "TRIATLO", "DUATLO", "IRONMAN", "DECATHLON"], forbidden: ["prova", "corrida", "natação", "resistência", "atleta"] },
-    { theme: "Esportes", words: ["FUTEBOL AMERICANO", "FUTEBOL DE AREIA", "FUTSAL", "FUTEBOL DE SALÃO", "FLAG FOOTBALL"], forbidden: ["bola", "gol", "campo", "time", "jogo"] },
-    { theme: "Esportes", words: ["CANOAGEM", "REMO", "RAFTING", "CANOAGEM SLALOM", "DRAGON BOAT"], forbidden: ["rio", "barco", "remo", "água", "equipe"] },
-
-    { theme: "História", words: ["REVOLUÇÃO FRANCESA", "QUEDA DA BASTILHA", "ILUMINISMO", "ERA NAPOLEÔNICA", "DECLARAÇÃO DOS DIREITOS DO HOMEM"], forbidden: ["França", "rei", "revolta", "liberdade", "1789"] },
-    { theme: "História", words: ["RENASCIMENTO", "REFORMA PROTESTANTE", "CONTRARREFORMA", "HUMANISMO", "LEONARDO DA VINCI"], forbidden: ["Europa", "arte", "Igreja", "século", "pintura"] },
-    { theme: "História", words: ["IMPÉRIO ROMANO", "JÚLIO CÉSAR", "AUGUSTO", "COLISEU", "PAX ROMANA"], forbidden: ["Roma", "imperador", "legião", "antiguidade", "Itália"] },
-    { theme: "História", words: ["CIVILIZAÇÃO MAIA", "IMPÉRIO ASTECA", "IMPÉRIO INCA", "MACHU PICCHU", "TENOCHTITLÁN"], forbidden: ["América", "povo", "México", "Peru", "civilização"] },
-    { theme: "História", words: ["BRASIL COLÔNIA", "CAPITANIAS HEREDITÁRIAS", "CICLO DO OURO", "BANDEIRANTES", "GOVERNO-GERAL"], forbidden: ["Portugal", "colônia", "Brasil", "exploração", "século"] },
-    { theme: "História", words: ["ABOLIÇÃO DA ESCRAVATURA", "LEI ÁUREA", "ZUMBI DOS PALMARES", "QUILOMBO", "PRINCESA ISABEL"], forbidden: ["escravidão", "Brasil", "liberdade", "1888", "negros"] },
-    { theme: "História", words: ["PROCLAMAÇÃO DA REPÚBLICA", "MARECHAL DEODORO", "ESTADO NOVO", "GETÚLIO VARGAS", "DIRETAS JÁ"], forbidden: ["Brasil", "governo", "presidente", "política", "história"] },
-    { theme: "História", words: ["PRIMEIRA GUERRA MUNDIAL", "TRATADO DE VERSALHES", "TRÍPLICE ENTENTE", "TRÍPLICE ALIANÇA", "GUERRA DE TRINCHEIRAS"], forbidden: ["1914", "Europa", "conflito", "soldado", "batalha"] },
-    { theme: "História", words: ["SEGUNDA GUERRA MUNDIAL", "DIA D", "HOLOCAUSTO", "PEARL HARBOR", "BOMBA ATÔMICA"], forbidden: ["1939", "Hitler", "guerra", "Alemanha", "conflito"] },
-    { theme: "História", words: ["GUERRA FRIA", "CORTINA DE FERRO", "CRISE DOS MÍSSEIS", "CORRIDA ESPACIAL", "QUEDA DO MURO DE BERLIM"], forbidden: ["Estados Unidos", "União Soviética", "comunismo", "Alemanha", "século XX"] },
-    { theme: "História", words: ["ROTA DA SEDA", "PÓLVORA", "BÚSSOLA", "PAPEL", "IMPRENSA DE GUTENBERG"], forbidden: ["China", "invenção", "comércio", "viagem", "Europa"] },
-    { theme: "História", words: ["MESOPOTÂMIA", "SUMÉRIOS", "BABILÔNIA", "CÓDIGO DE HAMURÁBI", "ESCRITA CUNEIFORME"], forbidden: ["antiguidade", "Tigre", "Eufrates", "civilização", "Oriente"] },
-    { theme: "História", words: ["NEFERTITI", "RAMSÉS II", "TUTANCÂMON", "ESFINGE", "VALE DOS REIS"], forbidden: ["Egito", "faraó", "Nilo", "tumba", "antigo"] },
-    { theme: "História", words: ["FEUDALISMO", "SENHOR FEUDAL", "VASSALO", "SERVO", "SUSERANIA"], forbidden: ["Idade Média", "terra", "castelo", "nobre", "medieval"] },
-    { theme: "História", words: ["EXPANSÃO MARÍTIMA", "CARAVELA", "TRATADO DE TORDESILHAS", "CABRAL", "CAMINHO DAS ÍNDIAS"], forbidden: ["navegação", "Portugal", "oceano", "viagem", "descobrimento"] }
-];
-
-const fallbackForbiddenByTheme = {
-    "Música": ["canção", "melodia", "som", "artista", "palco", "ouvir", "banda", "ritmo"],
-    "Ciência": ["pesquisa", "laboratório", "experimento", "estudo", "teoria", "descoberta", "matéria", "energia"],
-    "Natureza": ["ambiente", "espécie", "vida", "terra", "água", "clima", "paisagem", "ecossistema"],
-    "Filmes": ["cinema", "ator", "diretor", "história", "personagem", "tela", "roteiro", "estreia"],
-    "Esportes": ["atleta", "competição", "partida", "treino", "campeonato", "vitória", "equipe", "recorde"],
-    "História": ["passado", "século", "povo", "evento", "governo", "época", "documento", "civilização"]
-};
-
-const normalizeWords = value => value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("pt-BR")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-
-expandedCardGroups.forEach(group => {
-    group.words.forEach(word => {
-        const answer = ` ${normalizeWords(word)} `;
-        const forbidden = [...new Set([
-            ...group.forbidden,
-            ...fallbackForbiddenByTheme[group.theme]
-        ])].filter(term => {
-            const normalizedTerm = normalizeWords(term);
-            return !answer.includes(` ${normalizedTerm} `);
-        }).slice(0, 5);
-
-        cards.push({
-            theme: group.theme,
-            word,
-            forbidden
-        });
-    });
-});
 
 
 /* ======================================
    VARIÁVEIS
 ====================================== */
 
-let selectedTheme = "Todos";
-
+// null significa que todos os temas estão selecionados.
 let teamCount = 2;
 
 let selectedTime = 30;
@@ -1161,27 +827,6 @@ function showConfig() {
     showScreen("config");
 
 }
-
-
-/* ======================================
-   TEMAS
-====================================== */
-
-function selectTheme(element, theme) {
-
-    document
-        .querySelectorAll(".theme")
-        .forEach(btn => {
-            btn.classList.remove("selected");
-        });
-
-    element.classList.add("selected");
-
-    selectedTheme = theme;
-
-}
-
-
 /* ======================================
    TIMES
 ====================================== */
@@ -1252,7 +897,7 @@ function selectTime(element, time) {
 
 function startGame() {
 
-    teams = [];
+teams = [];
 
     for (let i = 0; i < teamCount; i++) {
 
@@ -1284,23 +929,12 @@ function nextCard() {
 
     clearInterval(timerInterval);
 
-    let availableCards = cards.filter(card => {
-
-        let themeMatch =
-            selectedTheme === "Todos" ||
-            card.theme === selectedTheme;
-
-        let notUsed =
-            !usedCards.includes(card);
-
-        return themeMatch && notUsed;
-
-    });
+    let availableCards = cards.filter(card => !usedCards.includes(card));
 
 
     /*
-       Se todas as cartas daquele tema
-       já foram utilizadas, encerra o jogo.
+       Quando todas as cartas já foram utilizadas,
+       encerra o jogo.
     */
 
     if (availableCards.length === 0) {
@@ -1318,13 +952,8 @@ function nextCard() {
     currentCard = availableCards[index];
 
     usedCards.push(currentCard);
-
-
-    document.getElementById("cardCategory")
-        .innerText = currentCard.theme;
-
     document.getElementById("cardWord")
-        .innerText = currentCard.word;
+        .innerText = currentCard.word.toLocaleUpperCase("pt-BR");
 
 
     const forbidden =
@@ -1337,7 +966,7 @@ function nextCard() {
 
         let span = document.createElement("span");
 
-        span.innerText = word;
+        span.innerText = word.toLocaleUpperCase("pt-BR");
 
         forbidden.appendChild(span);
 
