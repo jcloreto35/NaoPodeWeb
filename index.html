@@ -48,14 +48,44 @@
             text-align: center;
         }
 
-        .logo {
-            font-size: 52px;
-            font-weight: 900;
-            margin-bottom: 5px;
+        .brand-logo {
+            display: block;
+            object-fit: contain;
         }
 
-        .logo span {
-            color: #ef4444;
+        .brand-logo-home {
+            width: min(82vw, 340px);
+            max-height: 32vh;
+            margin-bottom: 10px;
+        }
+
+        .config-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo-compact {
+            width: 48px;
+            height: 42px;
+        }
+
+        .brand-logo-game {
+            width: 58px;
+            height: 42px;
+            flex: 0 0 auto;
+        }
+
+        .brand-logo-result {
+            width: min(45vw, 170px);
+            max-height: 20vh;
+            margin: 0 auto 8px;
+        }
+
+        .game-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .subtitle {
@@ -383,9 +413,7 @@
 
 <div id="home" class="screen active">
 
-    <div class="logo">
-        NÃO <span>PODE!</span>
-    </div>
+    <img class="brand-logo brand-logo-home" src="logo-nao-pode.png" alt="Não Pode!">
 
     <div class="subtitle">
         O jogo de palavras proibidas
@@ -410,7 +438,10 @@
             ←
         </button>
 
-        <h2>Configurar partida</h2>
+        <div class="config-heading">
+            <img class="brand-logo brand-logo-compact" src="logo-nao-pode.png" alt="">
+            <h2>Configurar partida</h2>
+        </div>
 
         <div style="width:30px"></div>
 
@@ -535,10 +566,11 @@
 
     <div class="game-header">
 
-        <div class="turn-team">
-            Vez do <span id="currentTeamName">
-                Time 1
-            </span>
+        <div class="game-brand">
+            <img class="brand-logo brand-logo-game" src="logo-nao-pode.png" alt="Não Pode!">
+            <div class="turn-team">
+                Vez do <span id="currentTeamName">Time 1</span>
+            </div>
         </div>
 
         <button class="mute-button"
@@ -614,6 +646,8 @@
 ========================= -->
 
 <div id="result" class="screen">
+
+    <img class="brand-logo brand-logo-result" src="logo-nao-pode.png" alt="Não Pode!">
 
     <div class="result-title">
         🏆 FIM DE JOGO!
