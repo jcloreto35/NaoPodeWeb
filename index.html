@@ -86,6 +86,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1;
+            min-width: 0;
         }
 
         .subtitle {
@@ -135,6 +137,7 @@
         }
 
         .section-title {
+            display: block;
             font-size: 15px;
             color: #9ca3af;
             margin-bottom: 12px;
@@ -182,8 +185,33 @@
             font: inherit;
         }
 
+        .team-name-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-color-preview {
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            border: 2px solid rgba(255,255,255,.8);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(255,255,255,.08);
+        }
+
         .team-name-input::placeholder {
             color: #9ca3af;
+        }
+
+        .max-score-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            background: #1f2937;
+            color: white;
+            font: inherit;
         }
 
         /* TEMPO */
@@ -222,8 +250,17 @@
         }
 
         .turn-team {
-            font-size: 18px;
-            font-weight: bold;
+            max-width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--team-color, #38bdf8);
+            border-radius: 14px;
+            background: #1f2937;
+            color: var(--team-color, #38bdf8);
+            font-size: clamp(20px, 5vw, 27px);
+            font-weight: 900;
+            line-height: 1.15;
+            overflow-wrap: anywhere;
+            box-shadow: 0 0 16px rgba(255,255,255,.08);
         }
 
         .mute-button {
@@ -338,7 +375,11 @@
         }
 
         .score-row.current {
-            color: #f87171;
+            font-weight: bold;
+            background: #111827;
+        }
+
+        .score-row span {
             font-weight: bold;
         }
 
@@ -349,6 +390,36 @@
         #result {
             justify-content: center;
             text-align: center;
+        }
+
+        #roundEnd {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .round-message {
+            margin: 4px 0 18px;
+            color: #d1d5db;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .round-team-name {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 10px 16px;
+            border: 2px solid;
+            border-radius: 12px;
+            background: #1f2937;
+            font-size: 26px;
+            font-weight: 900;
+        }
+
+        .round-team-score {
+            margin-bottom: 18px;
+            color: #d1d5db;
+            font-size: 18px;
         }
 
         .result-title {
@@ -382,7 +453,7 @@
 
 <div id="home" class="screen active">
 
-    <img class="brand-logo brand-logo-home" src="logo-nao-pode.png" alt="Não Pode!">
+    <img class="brand-logo brand-logo-home" src="https://jcloreto35.github.io/NaoPodeWeb/logo-nao-pode.png" alt="Não Pode!">
 
     <div class="subtitle">
         O jogo de palavras proibidas
@@ -408,7 +479,7 @@
         </button>
 
         <div class="config-heading">
-            <img class="brand-logo brand-logo-compact" src="logo-nao-pode.png" alt="">
+            <img class="brand-logo brand-logo-compact" src="https://jcloreto35.github.io/NaoPodeWeb/logo-nao-pode.png" alt="">
             <h2>Configurar partida</h2>
         </div>
 
@@ -443,6 +514,25 @@
         </div>
 
         <div id="teamNames" class="team-names"></div>
+
+    </div>
+
+
+    <!-- PONTUAÇÃO MÁXIMA -->
+
+    <div class="section">
+
+        <label class="section-title" for="maxScore">
+            PONTUAÇÃO MÁXIMA (OPCIONAL)
+        </label>
+
+        <input id="maxScore"
+               class="max-score-input"
+               type="number"
+               min="1"
+               step="1"
+               inputmode="numeric"
+               placeholder="Sem limite de pontos">
 
     </div>
 
@@ -493,7 +583,7 @@
     <div class="game-header">
 
         <div class="game-brand">
-            <img class="brand-logo brand-logo-game" src="logo-nao-pode.png" alt="Não Pode!">
+            <img class="brand-logo brand-logo-game" src="https://jcloreto35.github.io/NaoPodeWeb/logo-nao-pode.png" alt="Não Pode!">
             <div class="turn-team">
                 Vez do <span id="currentTeamName">Time 1</span>
             </div>
@@ -568,7 +658,7 @@
 
 <div id="result" class="screen">
 
-    <img class="brand-logo brand-logo-result" src="logo-nao-pode.png" alt="Não Pode!">
+    <img class="brand-logo brand-logo-result" src="https://jcloreto35.github.io/NaoPodeWeb/logo-nao-pode.png" alt="Não Pode!">
 
     <div class="result-title">
         🏆 FIM DE JOGO!
@@ -583,6 +673,29 @@
     <button class="main-button"
             onclick="showConfig()">
         JOGAR NOVAMENTE
+    </button>
+
+</div>
+
+
+<!-- =========================
+     FIM DA RODADA
+========================= -->
+
+<div id="roundEnd" class="screen">
+
+    <img class="brand-logo brand-logo-result" src="https://jcloreto35.github.io/NaoPodeWeb/logo-nao-pode.png" alt="Não Pode!">
+
+    <div class="result-title">RODADA ENCERRADA</div>
+
+    <div class="round-message" id="roundMessage"></div>
+
+    <div class="round-team-name" id="roundTeamName"></div>
+
+    <div class="round-team-score" id="roundTeamScore"></div>
+
+    <button class="main-button" onclick="beginNextRound()">
+        PRÓXIMA
     </button>
 
 </div>
@@ -787,9 +900,18 @@ let teamCount = 2;
 
 let selectedTime = 30;
 
+let maxScore = null;
+
 let currentTeam = 0;
 
 let teams = [];
+
+const teamColorPalette = [
+    "#38bdf8", "#f472b6", "#facc15", "#4ade80",
+    "#c084fc", "#fb923c", "#2dd4bf", "#fb7185"
+];
+
+let setupTeamColors = getRandomTeamColors(teamCount);
 
 let usedCards = [];
 
@@ -857,7 +979,23 @@ function renderTeamNameInputs() {
 
     container.innerHTML = "";
 
+    while (setupTeamColors.length < teamCount) {
+        const remainingColors = teamColorPalette.filter(color => !setupTeamColors.includes(color));
+        setupTeamColors.push(remainingColors[Math.floor(Math.random() * remainingColors.length)]);
+    }
+    setupTeamColors = setupTeamColors.slice(0, teamCount);
+
     for (let i = 0; i < teamCount; i++) {
+        const row = document.createElement("div");
+        row.className = "team-name-row";
+
+        const preview = document.createElement("span");
+        preview.className = "team-color-preview";
+        preview.style.backgroundColor = setupTeamColors[i];
+        preview.setAttribute("role", "img");
+        preview.setAttribute("aria-label", `Cor do time ${i + 1}`);
+        preview.title = `Cor do time ${i + 1}`;
+
         const input = document.createElement("input");
         input.type = "text";
         input.className = "team-name-input";
@@ -866,7 +1004,8 @@ function renderTeamNameInputs() {
         input.setAttribute("aria-label", `Nome do time ${i + 1} (opcional)`);
         input.placeholder = `Time ${i + 1} (opcional)`;
         input.value = names[i] || "";
-        container.appendChild(input);
+        row.append(preview, input);
+        container.appendChild(row);
     }
 
 }
@@ -897,12 +1036,19 @@ function selectTime(element, time) {
 
 function startGame() {
 
-teams = [];
+    teams = [];
+
+    const scoreInput = document.getElementById("maxScore");
+    const scoreLimit = Number(scoreInput.value);
+    maxScore = Number.isInteger(scoreLimit) && scoreLimit > 0 ? scoreLimit : null;
+
+    const teamColors = setupTeamColors.slice(0, teamCount);
 
     for (let i = 0; i < teamCount; i++) {
 
         teams.push({
             name: document.querySelectorAll("#teamNames input")[i].value.trim() || "Time " + (i + 1),
+            color: teamColors[i],
             score: 0
         });
 
@@ -917,6 +1063,20 @@ teams = [];
     updateScoreboard();
 
     nextCard();
+
+}
+
+
+function getRandomTeamColors(count) {
+
+    const colors = [...teamColorPalette];
+
+    for (let i = colors.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [colors[i], colors[randomIndex]] = [colors[randomIndex], colors[i]];
+    }
+
+    return colors.slice(0, count);
 
 }
 
@@ -974,8 +1134,10 @@ function nextCard() {
 
 
     document.getElementById("currentTeamName")
-        .innerText =
-        teams[currentTeam].name;
+        .innerText = teams[currentTeam].name;
+
+    document.querySelector(".turn-team")
+        .style.setProperty("--team-color", teams[currentTeam].color);
 
 
     startTimer();
@@ -1048,9 +1210,7 @@ function timeUp() {
 
     playSound();
 
-    alert("⏰ TEMPO ESGOTADO!");
-
-    nextTeam();
+    endRound("⏰ O TEMPO ACABOU!");
 
 }
 
@@ -1065,7 +1225,12 @@ function correctAnswer() {
 
     teams[currentTeam].score++;
 
-    nextTeam();
+    if (maxScore !== null && teams[currentTeam].score >= maxScore) {
+        finishGame(teams[currentTeam].name);
+        return;
+    }
+
+    endRound("✓ RESPOSTA CERTA! +1 PONTO");
 
 }
 
@@ -1078,7 +1243,7 @@ function passCard() {
 
     clearInterval(timerInterval);
 
-    nextTeam();
+    endRound("→ CARTA PASSADA");
 
 }
 
@@ -1087,7 +1252,29 @@ function passCard() {
    PRÓXIMO TIME
 ====================================== */
 
-function nextTeam() {
+function endRound(message) {
+
+    clearInterval(timerInterval);
+
+    const team = teams[currentTeam];
+
+    document.getElementById("roundMessage").textContent = message;
+
+    const teamName = document.getElementById("roundTeamName");
+    teamName.textContent = team.name;
+    teamName.style.color = team.color;
+    teamName.style.borderColor = team.color;
+
+    document.getElementById("roundTeamScore").textContent =
+        `Pontuação do time: ${team.score}`;
+
+    updateScoreboard();
+    showScreen("roundEnd");
+
+}
+
+
+function beginNextRound() {
 
     currentTeam++;
 
@@ -1098,6 +1285,8 @@ function nextTeam() {
     }
 
     updateScoreboard();
+
+    showScreen("game");
 
     nextCard();
 
@@ -1124,6 +1313,9 @@ function updateScoreboard() {
         row.className =
             "score-row";
 
+        row.style.borderLeft = `4px solid ${team.color}`;
+        row.style.paddingLeft = "10px";
+
 
         if (index === currentTeam) {
 
@@ -1134,6 +1326,7 @@ function updateScoreboard() {
 
         const name = document.createElement("span");
         name.textContent = team.name;
+        name.style.color = team.color;
         const score = document.createElement("strong");
         score.textContent = team.score;
         row.append(name, score);
@@ -1230,7 +1423,7 @@ function playSound() {
    FINAL DO JOGO
 ====================================== */
 
-function finishGame() {
+function finishGame(winnerName = null) {
 
     clearInterval(timerInterval);
 
@@ -1248,7 +1441,7 @@ function finishGame() {
 
     winner.innerText =
         "🏆 " +
-        teams[0].name +
+        (winnerName || teams[0].name) +
         " venceu!";
 
 
@@ -1267,9 +1460,12 @@ function finishGame() {
         row.className =
             "final-score";
 
+        row.style.borderLeft = `4px solid ${team.color}`;
+
 
         const name = document.createElement("span");
         name.textContent = `${index + 1}º - ${team.name}`;
+        name.style.color = team.color;
         const score = document.createElement("strong");
         score.textContent = `${team.score} ponto(s)`;
         row.append(name, score);
