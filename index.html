@@ -111,6 +111,82 @@
             transform: scale(.97);
         }
 
+        .secondary-button {
+            width: 100%;
+            max-width: 350px;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid #374151;
+            border-radius: 14px;
+            background: #1f2937;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .room-code {
+            margin: 12px 0 20px;
+            padding: 18px;
+            border: 2px dashed #38bdf8;
+            border-radius: 14px;
+            color: #7dd3fc;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-align: center;
+            user-select: all;
+        }
+
+        .room-info {
+            color: #9ca3af;
+            text-align: center;
+            margin: 8px 0 16px;
+        }
+
+        .room-players {
+            display: grid;
+            gap: 8px;
+            width: 100%;
+            margin: 10px 0 18px;
+        }
+
+        .room-player {
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #1f2937;
+        }
+
+        .room-error {
+            min-height: 22px;
+            margin-top: 8px;
+            color: #fca5a5;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .room-code-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            background: #1f2937;
+            color: white;
+            font: inherit;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .room-only {
+            display: none;
+        }
+
+        body.room-setup .room-only {
+            display: block;
+        }
+
         /* =========================
            CONFIGURAÇÃO
         ========================= */
@@ -463,6 +539,14 @@
         🎮 NOVA PARTIDA
     </button>
 
+    <button class="secondary-button" onclick="configureRoom()">
+        🏠 CRIAR SALA
+    </button>
+
+    <button class="secondary-button" onclick="showJoinRoom()">
+        🔗 CONECTAR A UMA SALA
+    </button>
+
 </div>
 
 
@@ -485,6 +569,11 @@
 
         <div style="width:30px"></div>
 
+    </div>
+
+    <div class="section room-only">
+        <label class="section-title" for="hostPlayerName">SEU NOME NA SALA</label>
+        <input id="hostPlayerName" class="team-name-input" type="text" maxlength="24" autocomplete="off" placeholder="Seu nome">
     </div>
 
 
@@ -567,10 +656,60 @@
     </div>
 
 
-    <button class="main-button" onclick="startGame()">
+    <button id="configStartButton" class="main-button" onclick="startConfiguredGame()">
         COMEÇAR!
     </button>
 
+    <div id="roomSetupError" class="room-error room-only"></div>
+
+</div>
+
+
+<!-- =========================
+     CONECTAR À SALA
+========================= -->
+
+<div id="joinRoom" class="screen">
+    <div class="header">
+        <button class="back-button" onclick="showScreen('home')">←</button>
+        <h2>Conectar à sala</h2>
+        <div style="width:30px"></div>
+    </div>
+
+    <div class="section">
+        <label class="section-title" for="joinRoomCode">CÓDIGO DA SALA</label>
+        <input id="joinRoomCode" class="room-code-input" type="text" maxlength="5" inputmode="numeric" pattern="[0-9]{5}" autocomplete="off" placeholder="EX: 04217">
+    </div>
+
+    <div class="section">
+        <label class="section-title" for="joinPlayerName">SEU NOME</label>
+        <input id="joinPlayerName" class="team-name-input" type="text" maxlength="24" autocomplete="off" placeholder="Como devemos te chamar?">
+    </div>
+
+    <div id="joinRoomError" class="room-error"></div>
+    <button class="main-button" onclick="submitJoinRoom()">CONECTAR</button>
+</div>
+
+
+<!-- =========================
+     SALA DE ESPERA
+========================= -->
+
+<div id="lobby" class="screen">
+    <div class="header">
+        <button class="back-button" onclick="leaveRoom()">←</button>
+        <h2>Sala de espera</h2>
+        <div style="width:30px"></div>
+    </div>
+
+    <div class="room-info">Compartilhe este código com os outros jogadores</div>
+    <div id="lobbyRoomCode" class="room-code"></div>
+    <button class="secondary-button" onclick="copyRoomCode()">COPIAR CÓDIGO</button>
+    <div class="section-title">JOGADORES NA SALA</div>
+    <div id="lobbyPlayers" class="room-players"></div>
+    <div id="lobbyStatus" class="room-info">Aguardando o início da partida...</div>
+    <div id="lobbyError" class="room-error"></div>
+    <button id="startRoomGameButton" class="main-button" onclick="startRoomGame()">INICIAR PARTIDA</button>
 </div>
 
 
@@ -701,7 +840,37 @@
 </div>
 
 
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.4.0/firebase-database-compat.js"></script>
+
 <script>
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDDStT7-Hj98UW5_IQeKG13_GtJfhn7_as",
+    authDomain: "naopode-59853.firebaseapp.com",
+    databaseURL: "https://naopode-59853-default-rtdb.firebaseio.com",
+    projectId: "naopode-59853",
+    storageBucket: "naopode-59853.firebasestorage.app",
+    messagingSenderId: "116067381518",
+    appId: "1:116067381518:web:93c8b8c20e7ac4645b275f"
+};
+
+let firebaseApp = null;
+let firebaseAuth = null;
+let firebaseDb = null;
+let activeRoomCode = null;
+let activeRoomRef = null;
+let activeRoomListener = null;
+let playerUid = null;
+let isRoomHost = false;
+let isCreatingRoom = false;
+let onlineRoomData = null;
+let onlineGameState = null;
+let serverTimeOffset = 0;
+let roomTimerStartedAt = null;
+let endingOnlineRound = false;
+let roomPlayerName = "";
 
 /* ======================================
    BANCO DE CARTAS
@@ -946,7 +1115,369 @@ function showScreen(id) {
 
 function showConfig() {
 
+    if (activeRoomRef && activeRoomListener) activeRoomRef.off("value", activeRoomListener);
+    activeRoomRef = null;
+    activeRoomListener = null;
+    activeRoomCode = null;
+    onlineRoomData = null;
+    onlineGameState = null;
+    isRoomHost = false;
+    isCreatingRoom = false;
+    document.body.classList.remove("room-setup");
+    document.getElementById("configStartButton").textContent = "COMEÇAR!";
+    document.getElementById("roomSetupError").textContent = "";
     showScreen("config");
+
+}
+
+
+function configureRoom() {
+
+    isCreatingRoom = true;
+    document.body.classList.add("room-setup");
+    document.getElementById("configStartButton").textContent = "CRIAR SALA";
+    document.getElementById("roomSetupError").textContent = "";
+    showScreen("config");
+
+}
+
+
+function showJoinRoom() {
+
+    document.getElementById("joinRoomError").textContent = "";
+    showScreen("joinRoom");
+
+}
+
+
+function ensureFirebase() {
+
+    if (!firebaseConfig.databaseURL) {
+        throw new Error("Crie o Realtime Database no Firebase e informe o databaseURL antes de usar as salas.");
+    }
+
+    if (!firebaseApp) {
+        if (!window.firebase) {
+            throw new Error("Não foi possível carregar o Firebase. Confira sua conexão com a internet.");
+        }
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        firebaseAuth = firebase.auth();
+        firebaseDb = firebase.database();
+        firebaseDb.ref(".info/serverTimeOffset").on("value", snapshot => {
+            serverTimeOffset = snapshot.val() || 0;
+        });
+    }
+
+}
+
+
+async function getRoomUser() {
+
+    ensureFirebase();
+    if (!firebaseAuth.currentUser) {
+        await firebaseAuth.signInAnonymously();
+    }
+    playerUid = firebaseAuth.currentUser.uid;
+    return playerUid;
+
+}
+
+
+function makeRoomCode() {
+
+    const randomValues = new Uint32Array(1);
+    crypto.getRandomValues(randomValues);
+    return String(randomValues[0] % 100000).padStart(5, "0");
+
+}
+
+
+function showRoomError(elementId, error) {
+
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    const messages = {
+        "auth/operation-not-allowed": "Ative o login anônimo em Authentication no Firebase.",
+        "auth/api-key-not-valid": "O Firebase rejeitou a chave da API. Confira se o firebaseConfig foi copiado do app Web correto e se a chave Browser está ativa no projeto.",
+        "auth/api-key-not-valid.-please-pass-a-valid-api-key.": "O Firebase rejeitou a chave da API. Confira se o firebaseConfig foi copiado do app Web correto e se a chave Browser está ativa no projeto.",
+        "auth/invalid-api-key": "O Firebase rejeitou a chave da API. Confira se o firebaseConfig foi copiado do app Web correto e se a chave Browser está ativa no projeto.",
+        "auth/unauthorized-domain": "Este domínio ainda não está autorizado em Authentication → Settings → Authorized domains no Firebase.",
+        "database/permission-denied": "O Firebase bloqueou o acesso. Confira as regras de segurança do Realtime Database.",
+        "PERMISSION_DENIED": "O Firebase bloqueou o acesso. Confira as regras de segurança do Realtime Database."
+    };
+    element.textContent = messages[error.code] || error.message || "Não foi possível acessar a sala.";
+
+}
+
+
+async function copyRoomCode() {
+
+    try {
+        await navigator.clipboard.writeText(activeRoomCode || "");
+        document.getElementById("lobbyStatus").textContent = "Código copiado. Compartilhe com os outros jogadores.";
+    } catch {
+        document.getElementById("lobbyStatus").textContent = "Selecione e copie o código da sala acima.";
+    }
+
+}
+
+
+async function startConfiguredGame() {
+
+    if (isCreatingRoom) {
+        await createRoom();
+    } else {
+        startGame();
+    }
+
+}
+
+
+async function createRoom() {
+
+    const errorElement = document.getElementById("roomSetupError");
+    errorElement.textContent = "";
+
+    try {
+        const hostUid = await getRoomUser();
+        const playerName = document.getElementById("hostPlayerName").value.trim() || "Anfitrião";
+        const configuredTeams = Array.from(document.querySelectorAll("#teamNames input"), (input, index) => ({
+            name: input.value.trim() || `Time ${index + 1}`,
+            color: setupTeamColors[index],
+            score: 0
+        }));
+        const scoreLimit = Number(document.getElementById("maxScore").value);
+        const initialRoom = {
+            hostUid,
+            status: "waiting",
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+            config: {
+                teams: configuredTeams,
+                selectedTime,
+                maxScore: Number.isInteger(scoreLimit) && scoreLimit > 0 ? scoreLimit : null
+            },
+            players: { [hostUid]: { name: playerName } },
+            game: null
+        };
+
+        let roomCode = null;
+        for (let attempt = 0; attempt < 12; attempt++) {
+            const candidateCode = makeRoomCode();
+            const roomRef = firebaseDb.ref(`rooms/${candidateCode}`);
+            try {
+                const result = await roomRef.transaction(current => current === null ? initialRoom : undefined);
+                if (result.committed) {
+                    roomCode = candidateCode;
+                    break;
+                }
+            } catch (error) {
+                if (error.code !== "PERMISSION_DENIED" && error.code !== "database/permission-denied") {
+                    throw error;
+                }
+            }
+        }
+
+        if (!roomCode) {
+            throw new Error("Não foi possível gerar um código livre. Confira as regras do banco ou tente novamente.");
+        }
+
+        connectToRoom(roomCode, true);
+    } catch (error) {
+        showRoomError("roomSetupError", error);
+        showScreen("config");
+    }
+
+}
+
+
+async function submitJoinRoom() {
+
+    const errorElement = document.getElementById("joinRoomError");
+    errorElement.textContent = "";
+    const code = document.getElementById("joinRoomCode").value.trim();
+    roomPlayerName = document.getElementById("joinPlayerName").value.trim();
+
+    if (!/^\d{5}$/.test(code)) {
+        errorElement.textContent = "Digite os 5 números informados pelo anfitrião.";
+        return;
+    }
+    if (!roomPlayerName) {
+        errorElement.textContent = "Informe seu nome para entrar na sala.";
+        return;
+    }
+
+    try {
+        const uid = await getRoomUser();
+        const roomRef = firebaseDb.ref(`rooms/${code}`);
+        const snapshot = await roomRef.once("value");
+        const room = snapshot.val();
+        if (!room) throw new Error("Sala não encontrada. Confira o código.");
+        if (room.status !== "waiting" && !room.players?.[uid]) {
+            throw new Error("A partida já começou e a sala não aceita novas conexões.");
+        }
+        await roomRef.child(`players/${uid}`).set({ name: roomPlayerName });
+        connectToRoom(code, uid === room.hostUid);
+    } catch (error) {
+        showRoomError("joinRoomError", error);
+    }
+
+}
+
+
+function connectToRoom(code, host) {
+
+    if (activeRoomRef && activeRoomListener) {
+        activeRoomRef.off("value", activeRoomListener);
+    }
+    activeRoomCode = code;
+    activeRoomRef = firebaseDb.ref(`rooms/${code}`);
+    isRoomHost = host;
+    document.getElementById("lobbyRoomCode").textContent = code;
+    activeRoomListener = snapshot => {
+        onlineRoomData = snapshot.val();
+        if (!onlineRoomData) {
+            showRoomError("lobbyError", new Error("Esta sala não existe mais."));
+            showScreen("lobby");
+            return;
+        }
+        isRoomHost = onlineRoomData.hostUid === playerUid;
+        renderRoomPlayers(onlineRoomData.players || {});
+        document.getElementById("startRoomGameButton").style.display = isRoomHost ? "block" : "none";
+
+        if (onlineRoomData.status === "waiting") {
+            document.getElementById("lobbyStatus").textContent = isRoomHost
+                ? "Aguardando os jogadores entrarem."
+                : "Aguardando o anfitrião iniciar a partida...";
+            showScreen("lobby");
+            return;
+        }
+
+        if (onlineRoomData.status === "playing" && onlineRoomData.game) {
+            syncOnlineGame(onlineRoomData);
+        }
+    };
+    activeRoomRef.on("value", activeRoomListener, error => showRoomError("lobbyError", error));
+    showScreen("lobby");
+
+}
+
+
+function renderRoomPlayers(players) {
+
+    const list = document.getElementById("lobbyPlayers");
+    list.innerHTML = "";
+    Object.entries(players).forEach(([uid, player]) => {
+        if (uid === playerUid) {
+            const input = document.createElement("input");
+            input.className = "team-name-input";
+            input.maxLength = 24;
+            input.value = player.name || "";
+            input.setAttribute("aria-label", "Seu nome na sala");
+            input.addEventListener("change", () => {
+                const name = input.value.trim().slice(0, 24);
+                if (name) activeRoomRef.child(`players/${playerUid}/name`).set(name);
+            });
+            list.appendChild(input);
+        } else {
+            const row = document.createElement("div");
+            row.className = "room-player";
+            row.textContent = player.name || "Jogador";
+            list.appendChild(row);
+        }
+    });
+
+}
+
+
+function startRoomGame() {
+
+    if (!isRoomHost || !activeRoomRef || !onlineRoomData) return;
+    const cardIndex = Math.floor(Math.random() * cards.length);
+    const config = onlineRoomData.config;
+    const startAt = Date.now() + serverTimeOffset;
+    activeRoomRef.update({
+        status: "playing",
+        game: {
+            phase: "playing",
+            teams: config.teams,
+            selectedTime: config.selectedTime,
+            maxScore: config.maxScore,
+            currentTeam: 0,
+            cardIndex,
+            usedCardIndexes: [cardIndex],
+            turnEndsAt: startAt + config.selectedTime * 1000,
+            roundMessage: ""
+        }
+    }).catch(error => showRoomError("lobbyError", error));
+
+}
+
+
+function syncOnlineGame(room) {
+
+    const game = room.game;
+    onlineGameState = game;
+    teams = game.teams || [];
+    currentTeam = game.currentTeam || 0;
+    selectedTime = game.selectedTime || 30;
+    maxScore = game.maxScore || null;
+    usedCards = (game.usedCardIndexes || []).map(index => cards[index]).filter(Boolean);
+
+    if (game.phase === "finished") {
+        clearInterval(timerInterval);
+        renderFinalResults(game.winnerName);
+        showScreen("result");
+        return;
+    }
+
+    const card = cards[game.cardIndex];
+    if (card) {
+        document.getElementById("cardWord").textContent = card.word.toLocaleUpperCase("pt-BR");
+        const forbidden = document.getElementById("forbiddenWords");
+        forbidden.innerHTML = "";
+        card.forbidden.forEach(word => {
+            const span = document.createElement("span");
+            span.textContent = word.toLocaleUpperCase("pt-BR");
+            forbidden.appendChild(span);
+        });
+        document.getElementById("currentTeamName").textContent = teams[currentTeam]?.name || "Time";
+        document.querySelector(".turn-team").style.setProperty("--team-color", teams[currentTeam]?.color || "#38bdf8");
+    }
+
+    updateScoreboard();
+    document.querySelector(".game-buttons").style.display = isRoomHost ? "flex" : "none";
+    document.querySelector("#roundEnd .main-button").style.display = isRoomHost ? "block" : "none";
+
+    if (game.phase === "roundEnd") {
+        const team = teams[currentTeam];
+        document.getElementById("roundMessage").textContent = game.roundMessage || "RODADA ENCERRADA";
+        const teamName = document.getElementById("roundTeamName");
+        teamName.textContent = team?.name || "";
+        teamName.style.color = team?.color || "white";
+        teamName.style.borderColor = team?.color || "white";
+        document.getElementById("roundTeamScore").textContent = `Pontuação do time: ${team?.score || 0}`;
+        showScreen("roundEnd");
+        clearInterval(timerInterval);
+        return;
+    }
+
+    showScreen("game");
+    roomTimerStartedAt = game.turnEndsAt;
+    startTimer();
+
+}
+
+
+function leaveRoom() {
+
+    if (activeRoomRef && activeRoomListener) activeRoomRef.off("value", activeRoomListener);
+    activeRoomCode = null;
+    activeRoomRef = null;
+    activeRoomListener = null;
+    onlineRoomData = null;
+    onlineGameState = null;
+    isRoomHost = false;
+    showScreen("home");
 
 }
 /* ======================================
@@ -1067,6 +1598,38 @@ function startGame() {
 }
 
 
+function startTimer() {
+
+    clearInterval(timerInterval);
+
+    if (activeRoomCode && onlineGameState) {
+        const updateOnlineTimer = () => {
+            timeRemaining = Math.max(0, Math.ceil((roomTimerStartedAt - (Date.now() + serverTimeOffset)) / 1000));
+            updateTimer();
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                if (isRoomHost && !endingOnlineRound) timeUp();
+            }
+        };
+        updateOnlineTimer();
+        timerInterval = setInterval(updateOnlineTimer, 200);
+        return;
+    }
+
+    timeRemaining = selectedTime;
+    updateTimer();
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimer();
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            timeUp();
+        }
+    }, 1000);
+
+}
+
+
 function getRandomTeamColors(count) {
 
     const colors = [...teamColorPalette];
@@ -1149,31 +1712,6 @@ function nextCard() {
    TIMER
 ====================================== */
 
-function startTimer() {
-
-    timeRemaining = selectedTime;
-
-    updateTimer();
-
-    timerInterval = setInterval(() => {
-
-        timeRemaining--;
-
-        updateTimer();
-
-        if (timeRemaining <= 0) {
-
-            clearInterval(timerInterval);
-
-            timeUp();
-
-        }
-
-    }, 1000);
-
-}
-
-
 function updateTimer() {
 
     const timer =
@@ -1208,6 +1746,8 @@ function updateTimer() {
 
 function timeUp() {
 
+    if (activeRoomCode && !isRoomHost) return;
+
     playSound();
 
     endRound("⏰ O TEMPO ACABOU!");
@@ -1221,6 +1761,7 @@ function timeUp() {
 
 function correctAnswer() {
 
+    if (activeRoomCode && !isRoomHost) return;
     clearInterval(timerInterval);
 
     teams[currentTeam].score++;
@@ -1241,6 +1782,7 @@ function correctAnswer() {
 
 function passCard() {
 
+    if (activeRoomCode && !isRoomHost) return;
     clearInterval(timerInterval);
 
     endRound("→ CARTA PASSADA");
@@ -1257,6 +1799,23 @@ function endRound(message) {
     clearInterval(timerInterval);
 
     const team = teams[currentTeam];
+
+    if (activeRoomCode) {
+        if (!isRoomHost || endingOnlineRound) return;
+        endingOnlineRound = true;
+        activeRoomRef.child("game").update({
+            phase: "roundEnd",
+            teams,
+            roundMessage: message,
+            turnEndsAt: null
+        }).then(() => {
+            endingOnlineRound = false;
+        }).catch(error => {
+            endingOnlineRound = false;
+            showRoomError("lobbyError", error);
+        });
+        return;
+    }
 
     document.getElementById("roundMessage").textContent = message;
 
@@ -1275,6 +1834,28 @@ function endRound(message) {
 
 
 function beginNextRound() {
+
+    if (activeRoomCode) {
+        if (!isRoomHost || onlineGameState?.phase !== "roundEnd") return;
+        const alreadyUsed = onlineGameState.usedCardIndexes || [];
+        const availableIndexes = cards.map((_, index) => index).filter(index => !alreadyUsed.includes(index));
+        if (!availableIndexes.length) {
+            finishGame();
+            return;
+        }
+        const cardIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+        const nextTeam = (currentTeam + 1) % teams.length;
+        const nextTime = Date.now() + serverTimeOffset + selectedTime * 1000;
+        activeRoomRef.child("game").update({
+            phase: "playing",
+            currentTeam: nextTeam,
+            cardIndex,
+            usedCardIndexes: [...alreadyUsed, cardIndex],
+            turnEndsAt: nextTime,
+            roundMessage: ""
+        }).catch(error => showRoomError("lobbyError", error));
+        return;
+    }
 
     currentTeam++;
 
@@ -1427,7 +2008,26 @@ function finishGame(winnerName = null) {
 
     clearInterval(timerInterval);
 
+    if (activeRoomCode) {
+        if (!isRoomHost) return;
+        const winningTeam = winnerName || [...teams].sort((a, b) => b.score - a.score)[0]?.name;
+        activeRoomRef.child("game").update({
+            phase: "finished",
+            teams,
+            winnerName: winningTeam,
+            turnEndsAt: null
+        }).catch(error => showRoomError("lobbyError", error));
+        return;
+    }
+
     showScreen("result");
+
+    renderFinalResults(winnerName);
+
+}
+
+
+function renderFinalResults(winnerName = null) {
 
 
     teams.sort(
